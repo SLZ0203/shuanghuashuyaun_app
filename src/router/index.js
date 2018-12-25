@@ -74,7 +74,7 @@ export default new VueRouter({
       component: Home,
       meta: {
         showFooter: true,
-        keepAlive: false
+        keepAlive: true
       }
     },
     {
@@ -170,7 +170,7 @@ export default new VueRouter({
       component: Mine,
       meta: {
         showFooter: true,
-        keepAlive: true
+        keepAlive: false
       }
     },
     {

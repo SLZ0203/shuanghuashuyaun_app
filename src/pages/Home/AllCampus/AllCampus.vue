@@ -8,7 +8,7 @@
       <ul class="project_list">
         <li class="project_item" v-for="(school,index) in schools" :key="index"
             @click="$router.push('/campus_detail')">
-          <img :src="'http://shedu.581vv.com'+school.school_thumb">
+          <img v-lazy="'http://shedu.581vv.com'+school.school_thumb">
           <div>
             <p class="pro_name">{{school.school_name}}</p>
             <p class="address">{{school.school_position}}</p>

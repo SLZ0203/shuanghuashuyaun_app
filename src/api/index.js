@@ -2,70 +2,75 @@
 * 定义接口请求函数的模块
 * */
 import ajax from './ajax'
+
+const baseUrl = 'http://shedu.581vv.com';
 /*登录/注册模块*/
 //用户登录接口
-export const reqEmailLogin = (email, password) => ajax('http://shedu.581vv.com/api/login',
+export const reqEmailLogin = (email, password) => ajax(baseUrl + '/api/login',
   {email, password}, 'POST');
 //发送验证码
-export const reqSendCode = email => ajax('http://shedu.581vv.com/api/send_email', {email}, 'POST');
+export const reqSendCode = email => ajax(baseUrl + '/api/send_email', {email}, 'POST');
 //用户注册接口
-export const reqRegister = (email, password) => ajax('http://shedu.581vv.com/api/register', {
+export const reqRegister = (email, password) => ajax(baseUrl + '/api/register', {
   email, password
 }, 'POST');
 //邮箱是否已注册
-export const reqEmailIsExist = email => ajax('http://shedu.581vv.com/api/email_is_exist', {email}, 'POST');
+export const reqEmailIsExist = email => ajax(baseUrl + '/api/email_is_exist', {email}, 'POST');
 //找回密码
-export const reqForgetPassword = (email, password) => ajax('http://shedu.581vv.com/api/forget_password', {
+export const reqForgetPassword = (email, password) => ajax(baseUrl + '/api/forget_password', {
   email,
   password
 }, 'POST');
 
 /*首页模块*/
 //获取轮播图
-export const reqBanners = () => ajax('http://shedu.581vv.com/api/banners');
+export const reqBanners = () => ajax(baseUrl + '/api/banners');
 //校区列表
-export const reqSchools = () => ajax('http://shedu.581vv.com/api/schools');
+export const reqSchools = () => ajax(baseUrl + '/api/schools');
 //校区详情
-export const reqSchoolDetail = () => ajax('http://shedu.581vv.com/api/school_detail');
+export const reqSchoolDetail = () => ajax(baseUrl + '/api/school_detail');
 //活动新闻
-export const reqNews = () => ajax('http://shedu.581vv.com/api/news');
+export const reqNews = () => ajax(baseUrl + '/api/news');
 //新闻详情
-export const reqNewsDetail = () => ajax('http://shedu.581vv.com/api/news_detail');
+export const reqNewsDetail = () => ajax(baseUrl + '/api/news_detail');
 //热门课程
-export const reqHotCourse = () => ajax('http://shedu.581vv.com/api/hot_course');
+export const reqHotCourse = () => ajax(baseUrl + '/api/hot_course');
 //热门新闻
-export const reqHotNews = () => ajax('http://shedu.581vv.com/api/hot_news');
+export const reqHotNews = () => ajax(baseUrl + '/api/hot_news');
 
 /*课程模块*/
 //课程列表
-export const reqCourse = () => ajax('http://shedu.581vv.com/api/course');
+export const reqCourse = () => ajax(baseUrl + '/api/course');
+//课程排序列表
+export const reqSortCourse = (sortType, sort) => ajax(baseUrl + '/api/course', {sortType, sort});
+//课程排序列表
+export const reqCateCourse = cateId => ajax(baseUrl + '/api/course', {cateId});
 //课程详情
-export const reqCourseDetail = () => ajax('http://shedu.581vv.com/api/detail');
+export const reqCourseDetail = () => ajax(baseUrl + '/api/detail');
 //课程分类
-export const reqCourseCate = () => ajax('http://shedu.581vv.com/api/cate');
+export const reqCourseCate = () => ajax(baseUrl + '/api/cate');
 //创建订单
-export const reqCreateOrder = (member_id, course_id) => ajax('http://shedu.581vv.com/api/createOrder', {
-    member_id,
-    course_id
-  }, 'POST');
+export const reqCreateOrder = (member_id, course_id) => ajax(baseUrl + '/api/createOrder', {
+  member_id,
+  course_id
+}, 'POST');
 //优惠券
-export const reqCoupons = member_id => ajax('http://shedu.581vv.com/api/coupons', {member_id});
+export const reqCoupons = member_id => ajax(baseUrl + '/api/coupons', {member_id});
 
 /*个人中心*/
 //异步上传图片
-export const reqUploadImg = pic => ajax('http://shedu.581vv.com/api/upload_img', {pic}, 'POST');
+export const reqUploadImg = pic => ajax(baseUrl + '/api/upload_img', {pic}, 'POST');
 //修改密码
-export const reqResetPassword = (member_id, password, new_password) => ajax('http://shedu.581vv.com/api/reset_password', {
-    member_id,
-    password,
-    new_password
-  }, 'POST');
-//获取用户信息
-export const reqMember = member_id => ajax('http://shedu.581vv.com/api/member', {member_id}, 'POST');
+export const reqResetPassword = (member_id, password, new_password) => ajax(baseUrl + '/api/reset_password', {
+  member_id,
+  password,
+  new_password
+}, 'POST');
 //修改个人资料
 export const reqPersonalEdit = (member_id, member_sex, member_birthday,
                                 member_detail_addr, member_industry, member_phone,
-                                member_wechat_no, member_headpic) => ajax('http://shedu.581vv.com/api/personal_edit', {
+                                member_wechat_no, member_headpic) => ajax(baseUrl + '/api/personal_edit',
+  {
     member_id,
     member_sex,
     member_birthday,
@@ -77,24 +82,24 @@ export const reqPersonalEdit = (member_id, member_sex, member_birthday,
   },
   'POST');
 //获取孩子信息
-export const reqMyChildren = member_id => ajax('http://shedu.581vv.com/api/my_children', {member_id}, 'POST');
+export const reqMyChildren = member_id => ajax(baseUrl + '/api/my_children', {member_id}, 'POST');
 //编辑孩子资料
-export const reqEditChildren = (member_id, children) => ajax('http://shedu.581vv.com/api/edit_children', {
+export const reqEditChildren = (member_id, children) => ajax(baseUrl + '/api/edit_children', {
   member_id,
   children
 }, 'POST');
 //我的课程
-export const reqMyCourse = () => ajax('http://shedu.581vv.com/api/my_course');
+export const reqMyCourse = member_id => ajax(baseUrl + '/api/my_course', {member_id});
 //我的消费记录
-export const reqExpense = () => ajax('http://shedu.581vv.com/api/expense');
+export const reqExpense = member_id => ajax(baseUrl + '/api/expense',{member_id});
 //我的优惠券
-export const reqMyCoupons = () => ajax('http://shedu.581vv.com/api/my_coupons');
+export const reqMyCoupons = member_id => ajax(baseUrl + '/api/my_coupons',{member_id});
 //我的通知
-export const reqInform = () => ajax('http://shedu.581vv.com/api/inform');
-//我的通知
-export const reqAbout = () => ajax('http://shedu.581vv.com/api/about');
+export const reqInform = member_id => ajax(baseUrl + '/api/inform',{member_id});
+//关于我们
+export const reqAbout = () => ajax(baseUrl + '/api/about');
 //留言板
-export const reqMessage = (member_id, message_center) => ajax('http://shedu.581vv.com/api/message', {
+export const reqMessage = (member_id, message_center) => ajax(baseUrl + '/api/message', {
   member_id,
   message_center,
 }, 'POST');

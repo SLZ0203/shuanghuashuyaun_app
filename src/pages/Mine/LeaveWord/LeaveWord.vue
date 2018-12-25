@@ -5,19 +5,41 @@
       <img src="../../../../static/images/21@2x.png" slot="return" class="return" @click="$router.back()">
     </HeaderTop>
     <div class="text_wrap">
-      <textarea placeholder="请写下您的留言"></textarea>
-      <div class="save_btn">提 交</div>
+      <textarea placeholder="请写下您的留言" v-model="message_center"></textarea>
+      <div class="save_btn" @click="submit">提 交</div>
     </div>
+    <Toast ref="toast"/>
   </section>
 </template>
 
 <script>
+  import {mapState} from 'vuex'
+  import {reqMessage} from "../../../api";
+
   export default {
     name: "LeaveWord",
-    data(){
-      return{
-        title: '留言板'
+    data() {
+      return {
+        title: '留言板',
+        message_center: ''//留言内容
       }
+    },
+    methods: {
+      async submit() {
+        const result = await reqMessage(
+          this.user.member_id,
+          this.message_center
+        );
+        if (result.code === 200) {
+          this.$refs.toast.hintHide(result.msg);
+          setTimeout(() => {
+            this.message_center = ''
+          }, 3000)
+        }
+      }
+    },
+    computed: {
+      ...mapState(['user'])
     }
   }
 </script>

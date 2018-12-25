@@ -13,7 +13,13 @@ import {
   reqCourseDetail,
   reqCourseCate,
   reqCoupons,
+  reqMyCourse,
+  reqExpense,
+  reqMyCoupons,
+  reqInform,
+  reqAbout,
 } from '../api'
+
 import {
   RECEIVE_USER,
   RESET_USER,
@@ -27,13 +33,21 @@ import {
   RECEIVE_COURSE,
   RECEIVE_COURSEDETAIL,
   RECEIVE_COURSECATE,
-  RECEIVE_COUPONS
+  RECEIVE_COUPONS,
+  RECEIVE_MYEXPENSE,
+  RECEIVE_MYCOUPONS,
+  RECEIVE_INFORM,
+  RECEIVE_ABOUT
 } from './mutation-types';
 
 export default {
   // 同步保存用户的action
   saveUser({commit}, user) {
     commit(RECEIVE_USER, {user})
+  },
+  //退出登录
+  loginOut({commit}) {
+    commit(RESET_USER)
   },
   //发异步请求获取首页轮播图
   async getBanner({commit}, cb) {
@@ -68,7 +82,7 @@ export default {
       typeof cb === 'function' && cb()
     }
   },
-  //发异步请求获取活动新闻课程
+  //发异步请求获取活动新闻
   async getNews({commit}, cb) {
     const result = await reqNews();
     if (result.code === 200) {
@@ -82,7 +96,6 @@ export default {
   //发异步请求获取新闻详情
   async getNewsDetail({commit}, cb) {
     const result = await reqNewsDetail();
-    console.log(result);
     if (result.code === 200) {
       const newsDetail = result.data;
       //commit给mutation
@@ -113,9 +126,20 @@ export default {
       typeof cb === 'function' && cb()
     }
   },
-  //发异步请求获取课程
+  //发异步请求获取课程列表
   async getCourse({commit}, cb) {
     const result = await reqCourse();
+    if (result.code === 200) {
+      const course = result.data;
+      //commit给mutation
+      commit(RECEIVE_COURSE, {course});
+      // 在更新状态后立即调用
+      typeof cb === 'function' && cb()
+    }
+  },
+  //发异步请求获取课程列表
+  async getSortCourse({commit}, cb) {
+    const result = await reqSortCourse();
     if (result.code === 200) {
       const course = result.data;
       //commit给mutation
@@ -154,6 +178,65 @@ export default {
       const coupons = result.data;
       //commit给mutation
       commit(RECEIVE_COUPONS, {coupons});
+    }
+  },
+  //异步获取我的课程
+  async getMyCourse({commit, state, cb}) {
+    const {user} = state;
+    const result = await reqMyCourse(user.member_id);
+    if (result.code === 200) {
+      const myCourse = result.data;
+      //commit给mutation
+      commit(RECEIVE_COUPONS, {myCourse});
+      // 在更新状态后立即调用
+      typeof cb === 'function' && cb()
+    }
+  },
+  //异步获取我的消费明细
+  async getMyExpense({commit, state, cb}) {
+    const {user} = state;
+    const result = await reqExpense(user.member_id);
+    if (result.code === 200) {
+      const myExpense = result.data;
+      //commit给mutation
+      commit(RECEIVE_MYEXPENSE, {myExpense});
+      // 在更新状态后立即调用
+      typeof cb === 'function' && cb()
+    }
+  },
+  //异步获取我的优惠券
+  async getMyCoupons({commit, state, cb}) {
+    const {user} = state;
+    const result = await reqMyCoupons(user.member_id);
+    if (result.code === 200) {
+      const myCoupons = result.data;
+      //commit给mutation
+      commit(RECEIVE_MYCOUPONS, {myCoupons});
+      // 在更新状态后立即调用
+      typeof cb === 'function' && cb()
+    }
+  },
+  //异步获取我的通知
+  async getMyInform({commit, state, cb}) {
+    const {user} = state;
+    const result = await reqInform(user.member_id);
+    if (result.code === 200) {
+      const myInform = result.data;
+      //commit给mutation
+      commit(RECEIVE_INFORM, {myInform});
+      // 在更新状态后立即调用
+      typeof cb === 'function' && cb()
+    }
+  },
+  //异步获取我的通知
+  async getAbout({commit, state, cb}) {
+    const result = await reqAbout();
+    if (result.code === 200) {
+      const about = result.data;
+      //commit给mutation
+      commit(RECEIVE_ABOUT, {about});
+      // 在更新状态后立即调用
+      typeof cb === 'function' && cb()
     }
   },
 }

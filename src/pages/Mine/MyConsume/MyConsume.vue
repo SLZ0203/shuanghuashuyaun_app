@@ -6,97 +6,51 @@
     </HeaderTop>
     <section class="scroll_wrap">
       <ul class="consume_list">
-        <li class="con_item">
+        <li class="con_item" v-for="(ex,index) in myExpense" :key="index">
           <p class="buy">
-            <span class="buy_what">购买汉语早教课程</span>
-            <span class="money">-2000日元</span>
+            <span class="buy_what">{{ex.expense_title}}</span>
+            <span class="money">-{{ex.expense_price}}日元</span>
           </p>
-          <p class="time">2018-10-28 08:10:57</p>
-        </li>
-        <li class="con_item">
-          <p class="buy">
-            <span class="buy_what">购买汉语早教课程</span>
-            <span class="money">-2000日元</span>
-          </p>
-          <p class="time">2018-10-28 08:10:57</p>
-        </li>
-        <li class="con_item">
-          <p class="buy">
-            <span class="buy_what">购买汉语早教课程</span>
-            <span class="money">-2000日元</span>
-          </p>
-          <p class="time">2018-10-28 08:10:57</p>
-        </li>
-        <li class="con_item">
-          <p class="buy">
-            <span class="buy_what">购买汉语早教课程</span>
-            <span class="money">-2000日元</span>
-          </p>
-          <p class="time">2018-10-28 08:10:57</p>
-        </li>
-        <li class="con_item">
-          <p class="buy">
-            <span class="buy_what">购买汉语早教课程</span>
-            <span class="money">-2000日元</span>
-          </p>
-          <p class="time">2018-10-28 08:10:57</p>
-        </li>
-        <li class="con_item">
-          <p class="buy">
-            <span class="buy_what">购买汉语早教课程</span>
-            <span class="money">-2000日元</span>
-          </p>
-          <p class="time">2018-10-28 08:10:57</p>
-        </li>
-        <li class="con_item">
-          <p class="buy">
-            <span class="buy_what">购买汉语早教课程</span>
-            <span class="money">-2000日元</span>
-          </p>
-          <p class="time">2018-10-28 08:10:57</p>
-        </li>
-        <li class="con_item">
-          <p class="buy">
-            <span class="buy_what">购买汉语早教课程</span>
-            <span class="money">-2000日元</span>
-          </p>
-          <p class="time">2018-10-28 08:10:57</p>
-        </li>
-        <li class="con_item">
-          <p class="buy">
-            <span class="buy_what">购买汉语早教课程</span>
-            <span class="money">-2000日元</span>
-          </p>
-          <p class="time">2018-10-28 08:10:57</p>
-        </li>
-        <li class="con_item">
-          <p class="buy">
-            <span class="buy_what">购买汉语早教课程</span>
-            <span class="money">-2000日元</span>
-          </p>
-          <p class="time">2018-10-28 08:10:57</p>
+          <p class="time">{{ex.expense_times}}</p>
         </li>
       </ul>
+      <div class="noExpense" v-if="myExpense.length===0">暂无消费记录</div>
     </section>
   </section>
 </template>
 
 <script>
   import BScroll from 'better-scroll'
+  import {mapState} from 'vuex'
+
   export default {
     name: "MyConsume",
-    data(){
-      return{
+    data() {
+      return {
         title: '我的消费明细'
       }
     },
-    mounted() {
-      this.$nextTick(() => {
-        new BScroll('.scroll_wrap', {
-          click: true
+    methods: {
+      _initScroll() {
+        this.$nextTick(() => {
+          if (!this.myscroll) {
+            this.myscroll = new BScroll('.scroll_wrap', {
+              click: true
+            })
+          } else {
+            this.myscroll.refresh()
+          }
         })
-      })
+      },
     },
+    computed: {
+      ...mapState(['myExpense'])
+    },
+    watch: {
+      myExpense: function (value) {
+        this._initScroll()
+      }
+    }
   }
 </script>
 
@@ -129,4 +83,10 @@
             color #9A9A9A
             font-size 24px
             margin-top 30px
+      .noExpense
+        width 100%
+        margin-top 150px
+        text-align: center
+        color #aaa
+        font-size 28px
 </style>

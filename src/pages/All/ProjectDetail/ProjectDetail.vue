@@ -6,7 +6,7 @@
     </HeaderTop>
     <section class="scroll_wrap">
       <div class="scroll_inner">
-        <img :src="'http://shedu.581vv.com'+courseDetail.course_thumb" class="banner">
+        <img v-lazy="'http://shedu.581vv.com'+courseDetail.course_thumb" class="banner">
         <div class="pro_info">
           <p class="pro_name">
             <span>{{courseDetail.course_name}}</span>
@@ -23,7 +23,7 @@
           <p class="text">
             {{courseDetail.course_introduction}}
           </p>
-          <img :src="'http://shedu.581vv.com'+courseDetail.course_thumb">
+          <img v-lazy="'http://shedu.581vv.com'+courseDetail.course_thumb">
           <p class="text">
             {{courseDetail.course_introduction}}
           </p>
@@ -63,12 +63,18 @@
           this.myscroll.refresh()
         }
       },
-      async toPay(mid,cid) {
+      async toPay(mid, cid) {
         const result = await reqCreateOrder(mid, cid);
-        console.log(mid);
-        console.log(cid);
-        console.log(result);
-        this.$router.push('/class_payment')
+        this.$router.push({
+          path: '/class_payment',
+          query: {
+            course_id: this.courseDetail.course_id,
+            course_name: this.courseDetail.course_name,
+            class_hour: this.courseDetail.course_class_hour,
+            course_price_yen: this.courseDetail.course_price_yen,
+            course_price_rmb: this.courseDetail.course_price_rmb
+          }
+        })
       }
     },
     computed: {

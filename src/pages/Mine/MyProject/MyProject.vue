@@ -9,49 +9,49 @@
         <div v-show="isShow">
           <div class="user_info">
             <div class="inner">
-              <img src="../../../../static/images/36@2x.png" alt="">
+              <img v-lazy="'http://shedu.581vv.com'+user.member_headpic" alt="">
               <div>
-                <p class="user_name">王小明</p>
-                <p class="user_num">会员号：552541</p>
+                <p class="user_name">{{user.member_nickname}}</p>
+                <p class="user_num">会员号：{{user.member_id}}</p>
               </div>
             </div>
           </div>
           <ul class="project_list">
-            <li class="project_item" v-for="(item,index) in myProjectList" :key="index">
+            <li class="project_item" v-for="(item,index) in myCourse" :key="index">
               <ul class="item_info_list">
                 <li class="item_info">
-                  <span class="name">{{item.name}}</span>
+                  <span class="name">{{item.memberclass_title}}</span>
                   <div class="see_info">
-                    <span @click="upData(item.number)">查看详情</span>
-                    <img src="../../../../static/images/46@2x.png" alt="">
+                    <span @click="upData(index)">查看详情</span>
+                    <img src="../../../../static/images/46@2x.png" class="more">
                   </div>
                 </li>
                 <li class="item_info">
                   <span>上课时间</span>
-                  <span>{{item.time}}</span>
+                  <span>{{item.memberclass_timeclass}}</span>
                 </li>
                 <li class="item_info">
                   <span>剩余课程</span>
-                  <span class="info_num">{{item.surplus}}次</span>
+                  <span class="info_num">{{item.memberclass_number}}次</span>
                 </li>
                 <li class="item_info">
                   <span>上课校区</span>
-                  <span>{{item.campus}}</span>
+                  <span>{{item.memberclass_xname}}</span>
                 </li>
               </ul>
             </li>
           </ul>
         </div>
         <!--我的上课状态页面，点击查看详情显示-->
-        <div class="class_state" v-show="!isShow">
+       <!-- <div class="class_state" v-show="!isShow">
           <div class="state_info">
             <div class="info_inner">
               <div class="class_name">
-                <span>{{myProjectList[num].name}}</span>
-                <span>剩余{{myProjectList[num].surplus}}次</span>
+                <span>{{myCourse[num].memberclass_title}}</span>
+                <span>剩余{{myCourse[num].memberclass_number}}次</span>
               </div>
-              <p class="class_time">{{myProjectList[num].time}}</p>
-              <p>{{myProjectList[num].campus}}</p>
+              <p class="class_time">{{myCourse[num].memberclass_timeclass}}</p>
+              <p>{{myCourse[num].memberclass_xname}}</p>
             </div>
           </div>
           <ul class="class_list">
@@ -60,39 +60,17 @@
               <span class="time">2018-11-30</span>
               <span>爱贝汉语早教课程</span>
             </li>
-            <li class="class_item">
-              <span class="time">2018-11-30</span>
-              <span>爱贝汉语早教课程</span>
-            </li>
-            <li class="class_item">
-              <span class="time">2018-11-30</span>
-              <span>爱贝汉语早教课程</span>
-            </li>
-            <li class="class_item">
-              <span class="time">2018-11-30</span>
-              <span>爱贝汉语早教课程</span>
-            </li>
-            <li class="class_item">
-              <span class="time">2018-11-30</span>
-              <span>爱贝汉语早教课程</span>
-            </li>
-            <li class="class_item">
-              <span class="time">2018-11-30</span>
-              <span>爱贝汉语早教课程</span>
-            </li>
-            <li class="class_item">
-              <span class="time">2018-11-30</span>
-              <span>爱贝汉语早教课程</span>
-            </li>
           </ul>
-        </div>
+        </div>-->
       </div>
+      <div class="noPro" v-if="myCourse.length===0">您暂时没有课程安排</div>
     </section>
   </section>
 </template>
 
 <script>
   import BScroll from 'better-scroll'
+  import {mapState} from 'vuex'
 
   export default {
     name: "MyProject",
@@ -101,50 +79,13 @@
         title: '我的课程',
         isShow: true,
         num: 0,
-        myProjectList: [
-          {
-            name: '爱贝汉语早教课程',
-            time: '每周六下午6点半',
-            surplus: 10,
-            campus: '双华书院',
-            number: 0
-          },
-          {
-            name: '爱贝英语早教课程',
-            time: '每周六下午3点半',
-            surplus: 9,
-            campus: '北大书院',
-            number: 1
-          },
-          {
-            name: '爱贝汉语早教课程',
-            time: '每周日下午2点半',
-            surplus: 8,
-            campus: '清华书院',
-            number: 2
-          },
-          {
-            name: '爱贝汉语早教课程',
-            time: '每周六下午3点半',
-            surplus: 20,
-            campus: '政法大学',
-            number: 3
-          },
-          {
-            name: '爱贝汉语早教课程',
-            time: '每周日上午9点半',
-            surplus: 15,
-            campus: '清华附中',
-            number: 4
-          }
-        ]
       }
     },
     methods: {
       goWhich() {
         if (this.title === '我的课程') {
           return this.$router.back()
-        } else if(this.title === '我的上课状态'){
+        } else if (this.title === '我的上课状态') {
           this.isShow = true;
           this.title = '我的课程'
         }
@@ -153,15 +94,25 @@
         this.num = n;
         this.isShow = false;
         this.title = '我的上课状态'
+      },
+      _initScroll() {
+        if (!this.myscroll) {
+          this.myscroll = new BScroll('.scroll_wrap', {
+            click: true
+          })
+        } else {
+          this.myscroll.refresh()
+        }
+      },
+    },
+    computed: {
+      ...mapState(['user', 'myCourse'])
+    },
+    watch: {
+      myCourse: function (value) {
+        this._initScroll()
       }
-    },
-    mounted() {
-      this.$nextTick(() => {
-        new BScroll('.scroll_wrap', {
-          click: true
-        })
-      })
-    },
+    }
   }
 </script>
 
@@ -177,63 +128,72 @@
       .inner_wrap
         width 100%
         padding-bottom 120px
-      .user_info
-        width 100%
-        height 278px
-        background-color #fff
-        padding 10px
-        box-sizing border-box
-        .inner
+        .user_info
           width 100%
-          height 100%
-          bg-image("../../../../static/images/37")
-          background-size 100% 100%
-          background-repeat no-repeat
-          display flex
-          align-items center
-          img
-            width 131px
-            height 132px
-            border-radius 50%
-            margin 0 20px 0 47px
-          .user_name
-            color #fff
-            font-size 36px
-            margin-bottom 36px
-          .user_num
-            color #fff
-            font-size 28px
-      .project_list
-        width 100%
-        padding 30px 30px 0
-        box-sizing border-box
-        .project_item
-          width 100%
-          background #fff
-          box-shadow: 0 5px 30px -1px rgba(36, 37, 41, 0.1);
-          border-radius 8px
-          margin-bottom 40px
-          .item_info_list
+          height 278px
+          background-color #fff
+          padding 10px
+          box-sizing border-box
+          .inner
             width 100%
-            padding 0 26px
-            box-sizing border-box
-            .item_info
+            height 100%
+            bg-image("../../../../static/images/37")
+            background-size 100% 100%
+            background-repeat no-repeat
+            display flex
+            align-items center
+            img
+              width 131px
+              height 132px
+              border-radius 50%
+              margin 0 20px 0 47px
+            .user_name
+              color #fff
+              font-size 36px
+              margin-bottom 36px
+            .user_num
+              color #fff
+              font-size 28px
+        .project_list
+          width 100%
+          padding 30px 30px 0
+          box-sizing border-box
+          .project_item
+            width 100%
+            background #fff
+            box-shadow: 0 5px 30px -1px rgba(36, 37, 41, 0.1);
+            border-radius 8px
+            margin-bottom 40px
+            .item_info_list
               width 100%
-              height 120px
-              display flex
-              align-items center
-              justify-content space-between
-              bottom-border-1px(#ccc)
-              span
-                font-size 30px
-                color #676767
-              .name
-                color black
-                font-weight 600
-                font-size 34px
-              .info_num
-                color $main
-                font-weight 600
+              padding 0 26px
+              box-sizing border-box
+              .item_info
+                width 100%
+                height 120px
+                display flex
+                align-items center
+                justify-content space-between
+                bottom-border-1px(#ccc)
+                span
+                  font-size 30px
+                  color #676767
+                .name
+                  color black
+                  font-weight 600
+                  font-size 34px
+                .info_num
+                  color $main
+                  font-weight 600
+                .more
+                  width 13px
+                  height 25px
+      .noPro
+        width 100%
+        margin-top 150px
+        text-align: center
+        color #888
+        font-size 28px
     .class_state
       width 100%
       height 100%

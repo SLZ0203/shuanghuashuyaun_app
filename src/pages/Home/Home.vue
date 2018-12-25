@@ -4,11 +4,11 @@
     <HeaderTop :title="title"></HeaderTop>
     <div class="scroll_wrap">
       <div class="outer_wrap">
-        <div class="swiper_wrap">
+        <div class="banner_wrap">
           <div class="swiper-container">
             <ul class="swiper-wrapper">
               <li class="swiper-slide" v-for="(ban,index) in banner" :key="index">
-                <img :src="'http://shedu.581vv.com'+ban.banner_pic">
+                <img v-lazy="'http://shedu.581vv.com'+ban.banner_pic">
               </li>
             </ul>
             <div class="swiper-pagination"></div>
@@ -38,7 +38,7 @@
           </li>
           <li class="project_item" v-for="(pro,index) in hotCourse" :key="index"
               @click="$router.push('/project_detail')">
-            <img :src="'http://shedu.581vv.com'+pro.course_thumb">
+            <img v-lazy="'http://shedu.581vv.com'+pro.course_thumb">
             <div>
               <p class="pro_name">{{pro.course_name}}</p>
               <span class="pro_year ellipsis">{{pro.course_tags}}</span>
@@ -59,8 +59,8 @@
               <img src="../../../static/images/5@2x.png" class="more_img">
             </span>
           </li>
-          <li class="news_item" v-for="(news,index) in hotNews" :key="index">
-            <img :src="'http://shedu.581vv.com'+news.news_pic">
+          <li class="news_item" v-for="(news,index) in hotNews" :key="index" @click="$router.push('/news_detail')">
+            <img v-lazy="'http://shedu.581vv.com'+news.news_pic">
             <div class="inner_wrap">
               <p class="pro_name">{{news.news_title}}</p>
               <div class="pro_data">
@@ -78,8 +78,8 @@
 </template>
 
 <script>
-  import Swiper from 'swiper'
   import 'swiper/dist/css/swiper.min.css'
+  import Swiper from 'swiper'
   import BScroll from 'better-scroll'
   import {mapState} from 'vuex'
 
@@ -91,43 +91,44 @@
       }
     },
     mounted() {
-      this._initScroll();
       //异步获取轮播图
-      this.$store.dispatch('getBanner', () => {
-        this.$nextTick(() => {
-          this._initBanner();
-        })
-      });
+      this.$store.dispatch('getBanner');
       //异步获取热门课程
       this.$store.dispatch('getHotcourse');
       //异步获取热门新闻
       this.$store.dispatch('getHotNews');
     },
+    activated() {
+      this._initScroll();
+    },
     methods: {
-      _initBanner() {
-        new Swiper('.swiper-container', {
-          pagination: {
-            el: '.swiper-pagination',
-          },
-          loop: true,
-          autoplay: true
-        });
-      },
       _initScroll() {
-        this.$nextTick(() => {
-          if (!this.myscroll) {
-            this.myscroll = new BScroll('.scroll_wrap', {
-              click: true
-            })
-          } else {
-            this.myscroll.refresh()
-          }
-        })
+        if (!this.myscroll) {
+          this.myscroll = new BScroll('.scroll_wrap', {
+            click: true
+          })
+        } else {
+          this.myscroll.refresh()
+        }
       },
     },
     computed: {
       ...mapState(['banner', 'hotNews', 'hotCourse'])
     },
+    watch: {
+      banner(value) {
+        this.$nextTick(() => {
+          this.mySwiper = new Swiper('.swiper-container', {
+            loop: true, // 循环模式选项
+            autoplay: true,
+            // 如果需要分页器
+            pagination: {
+              el: '.swiper-pagination',
+            },
+          })
+        })
+      }
+    }
   }
 </script>
 
@@ -144,14 +145,16 @@
       .outer_wrap
         width 100%
         padding-bottom 230px
-        .swiper_wrap
+        .banner_wrap
+          width 100%
+          height 360px
           padding 0 30px
           box-sizing border-box
-          background rgba(255, 255, 255, 1)
-          .swiper-slide
-            img
-              width 100%
-              height 360px
+          background #fff
+          img
+            width 100%
+            height 100%
+            border-radius 15px
         .btn_list
           width 100%
           display flex

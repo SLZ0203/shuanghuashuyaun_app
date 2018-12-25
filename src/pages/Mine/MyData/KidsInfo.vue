@@ -17,14 +17,14 @@
                 <span class="info_one">性别</span>
                 <span class="info_two">
                 <span>女</span>
-                  <img src="../../../../static/images/5@2x.png" alt="">
+                  <img src="../../../../static/images/5@2x.png" class="more">
                 </span>
               </li>
               <li class="info_item">
                 <span class="info_one">出生年月</span>
                 <span class="info_two">
                 <span>1995-02-03</span>
-                  <img src="../../../../static/images/5@2x.png" alt="">
+                  <img src="../../../../static/images/5@2x.png" class="more">
                 </span>
               </li>
             </ul>
@@ -33,7 +33,7 @@
             <ul>
               <li class="info_num">
                 <span>2</span>
-                <img src="../../../../static/images/48@2x.png" alt="">
+                <img src="../../../../static/images/48@2x.png" class="delete">
               </li>
               <li class="info_item">
                 <span class="info_one">姓名</span>
@@ -43,99 +43,21 @@
                 <span class="info_one">性别</span>
                 <span class="info_two">
                 <span>女</span>
-                  <img src="../../../../static/images/5@2x.png" alt="">
+                  <img src="../../../../static/images/5@2x.png" class="more">
                 </span>
               </li>
               <li class="info_item">
                 <span class="info_one">出生年月</span>
                 <span class="info_two">
                 <span>1995-02-03</span>
-                  <img src="../../../../static/images/5@2x.png" alt="">
-                </span>
-              </li>
-            </ul>
-          </li>
-          <li class="user_info_item">
-            <ul>
-              <li class="info_num">
-                <span>2</span>
-                <img src="../../../../static/images/48@2x.png" alt="">
-              </li>
-              <li class="info_item">
-                <span class="info_one">姓名</span>
-                <span class="info_two">王小明</span>
-              </li>
-              <li class="info_item">
-                <span class="info_one">性别</span>
-                <span class="info_two">
-                <span>女</span>
-                  <img src="../../../../static/images/5@2x.png" alt="">
-                </span>
-              </li>
-              <li class="info_item">
-                <span class="info_one">出生年月</span>
-                <span class="info_two">
-                <span>1995-02-03</span>
-                  <img src="../../../../static/images/5@2x.png" alt="">
-                </span>
-              </li>
-            </ul>
-          </li>
-          <li class="user_info_item">
-            <ul>
-              <li class="info_num">
-                <span>2</span>
-                <img src="../../../../static/images/48@2x.png" alt="">
-              </li>
-              <li class="info_item">
-                <span class="info_one">姓名</span>
-                <span class="info_two">王小明</span>
-              </li>
-              <li class="info_item">
-                <span class="info_one">性别</span>
-                <span class="info_two">
-                <span>女</span>
-                  <img src="../../../../static/images/5@2x.png" alt="">
-                </span>
-              </li>
-              <li class="info_item">
-                <span class="info_one">出生年月</span>
-                <span class="info_two">
-                <span>1995-02-03</span>
-                  <img src="../../../../static/images/5@2x.png" alt="">
-                </span>
-              </li>
-            </ul>
-          </li>
-          <li class="user_info_item">
-            <ul>
-              <li class="info_num">
-                <span>2</span>
-                <img src="../../../../static/images/48@2x.png" alt="">
-              </li>
-              <li class="info_item">
-                <span class="info_one">姓名</span>
-                <span class="info_two">王小明</span>
-              </li>
-              <li class="info_item">
-                <span class="info_one">性别</span>
-                <span class="info_two">
-                <span>女</span>
-                  <img src="../../../../static/images/5@2x.png" alt="">
-                </span>
-              </li>
-              <li class="info_item">
-                <span class="info_one">出生年月</span>
-                <span class="info_two">
-                <span>1995-02-03</span>
-                  <img src="../../../../static/images/5@2x.png" alt="">
+                  <img src="../../../../static/images/5@2x.png" class="more">
                 </span>
               </li>
             </ul>
           </li>
         </ul>
         <div class="add_kids_info">
-          <img src="../../../../static/images/49@2x.png" alt="">
+          <img src="../../../../static/images/49@2x.png" class="add">
           <span>添加孩子资料</span>
         </div>
         <div class="save_btn">保存</div>
@@ -195,6 +117,9 @@
             box-sizing border-box
             justify-content space-between
             bottom-border-1px(#ccc)
+            .delete
+              width 30px
+              height 36px
           .info_item
             width 100%
             height 110px
@@ -205,6 +130,9 @@
             box-sizing border-box
             justify-content space-between
             bottom-border-1px(#ccc)
+            .more
+              width 13px
+              height 25px
             input
               outline none
               height 100%
@@ -218,6 +146,9 @@
         width 100%
         text-align: center
         margin-top 15px
+        .add
+          width 36px
+          height 36px
         span
           color $main
           font-size 28px

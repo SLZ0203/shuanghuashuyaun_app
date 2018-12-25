@@ -14,14 +14,19 @@ import {
   RECEIVE_COURSE,
   RECEIVE_COURSEDETAIL,
   RECEIVE_COURSECATE,
-  RECEIVE_COUPONS
+  RECEIVE_COUPONS,
+  RECEIVE_MYCOURSE,
+  RECEIVE_MYEXPENSE,
+  RECEIVE_MYCOUPONS,
+  RECEIVE_INFORM,
+  RECEIVE_ABOUT
 } from './mutation-types';
 
 export default {
   [RECEIVE_USER](state, {user}) {
     state.user = user
   },
-  [RESET_USER] (state) {
+  [RESET_USER](state) {
     state.user = {}
   },
   [RECEIVE_BANNER](state, {banner}) {
@@ -56,5 +61,20 @@ export default {
   },
   [RECEIVE_COUPONS](state, {coupons}) {
     state.coupons = coupons
+  },
+  [RECEIVE_MYCOURSE](state, {myCourse}) {
+    state.myCourse = myCourse
+  },
+  [RECEIVE_MYEXPENSE](state, {myExpense}) {
+    state.myExpense = myExpense
+  },
+  [RECEIVE_MYCOUPONS](state, {myCoupons}) {
+    state.myCoupons = myCoupons
+  },
+  [RECEIVE_INFORM](state, {myInform}) {
+    state.myInform = myInform
+  },
+  [RECEIVE_ABOUT](state, {about}) {
+    state.about = about
   },
 }

@@ -13,7 +13,7 @@
         <p class="news_text">
           {{newsDetail.news_center}}
         </p>
-        <img :src="'http://shedu.581vv.com'+newsDetail.news_pic" class="news_img">
+        <img v-lazy="'http://shedu.581vv.com'+newsDetail.news_pic" class="news_img">
         <p class="news_text">
           {{newsDetail.news_center}}
         </p>

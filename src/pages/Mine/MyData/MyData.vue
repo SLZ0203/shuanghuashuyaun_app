@@ -7,28 +7,29 @@
     <ul class="mine_list">
       <li class="mine_item" @click="$router.push('/myinfo')">
         <span class="name">我的资料</span>
-        <img src="../../../../static/images/5@2x.png" alt="">
+        <img src="../../../../static/images/5@2x.png" class="more">
       </li>
       <li class="mine_item" @click="$router.push('/kidsinfo')">
         <span class="name">孩子资料</span>
-        <img src="../../../../static/images/5@2x.png" alt="">
+        <img src="../../../../static/images/5@2x.png" class="more">
       </li>
       <li class="mine_item" @click="$router.push('/changepwd')">
         <span class="name">修改密码</span>
-        <img src="../../../../static/images/5@2x.png" alt="">
+        <img src="../../../../static/images/5@2x.png" class="more">
       </li>
     </ul>
   </section>
 </template>
 
 <script>
+
   export default {
     name: "MyData",
-    data(){
-      return{
+    data() {
+      return {
         title: '我的资料'
       }
-    }
+    },
   }
 </script>
 
@@ -45,6 +46,9 @@
       display flex
       align-items center
       justify-content space-between
+      .more
+        width 13px
+        height 25px
       .name
         font-size 30px
 </style>

@@ -8,7 +8,7 @@
     </div>
     <div class="guide_item" @click="goTo('/all')" :class="{on:$route.path==='/all'}">
       <img src="../../../static/images/15@2x.png" class="guide_img" v-if="$route.path==='/all'">
-      <img src="../../../static/images/16@2x.png" class="guide_img"  v-else>
+      <img src="../../../static/images/16@2x.png" class="guide_img" v-else>
       <span class="guide_name">全部课程</span>
     </div>
     <div class="guide_item" @click="goTo('/mine')" :class="{on:$route.path==='/mine'}">
@@ -24,7 +24,7 @@
     name: "FooterGuide",
     methods: {
       goTo(path) {
-        this.$router.replace(path)
+        this.$router.replace(path);
       },
     }
   }

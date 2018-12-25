@@ -33,6 +33,7 @@
     </ul>
     <div class="login_btn" @click="restPwd">重置密码</div>
     <p class="to_login" @click="$router.push('/login')">已有账号，去登录</p>
+    <Toast ref="toast"/>
   </section>
 </template>
 

@@ -6,87 +6,54 @@
     </HeaderTop>
     <section class="scroll_wrap">
       <ul class="msg_list">
-        <li class="msg_item" v-for="(item,index) in msgArray" :key="index">
-          <img :src="item.imgUrl" alt="">
+        <li class="msg_item" v-for="(item,index) in myInform" :key="index">
+          <img v-lazy="'http://shedu.581vv.com'+item.inform_pic" alt="">
           <div class="right_wrap">
             <div class="item_top">
-              <span class="name">{{item.name}}</span>
-              <span class="time">{{item.time}}</span>
+              <span class="name">{{item.inform_name}}</span>
+              <span class="time">{{item.inform_times}}</span>
             </div>
-            <div class="text">{{item.text}}</div>
+            <div class="text">{{item.inform_center}}</div>
           </div>
         </li>
       </ul>
+      <div class="noMsg" v-if="myInform.length===0">暂时没有新消息</div>
     </section>
   </section>
 </template>
 
 <script>
   import BScroll from 'better-scroll'
+  import {mapState} from 'vuex'
+
   export default {
     name: "Message",
-    data(){
-      return{
+    data() {
+      return {
         title: '我的消息',
-        msgArray:[
-          {
-            imgUrl: '../../static/images/58@2x.png',
-            name: '上课提醒',
-            time: '17:00',
-            text: '您的汉语课程明天上午10点开始，请注意时间'
-          },
-          {
-            imgUrl: '../../static/images/58@2x.png',
-            name: '上课提醒',
-            time: '17:00',
-            text: '您的汉语课程明天上午10点开始，请注意时间'
-          },
-          {
-            imgUrl: '../../static/images/58@2x.png',
-            name: '上课提醒',
-            time: '17:00',
-            text: '您的汉语课程明天上午10点开始，请注意时间'
-          },
-          {
-            imgUrl: '../../static/images/58@2x.png',
-            name: '上课提醒',
-            time: '17:00',
-            text: '您的汉语课程明天上午10点开始，请注意时间'
-          },
-          {
-            imgUrl: '../../static/images/58@2x.png',
-            name: '上课提醒',
-            time: '17:00',
-            text: '您的汉语课程明天上午10点开始，请注意时间'
-          },
-          {
-            imgUrl: '../../static/images/59@2x.png',
-            name: '会费到期',
-            time: '17:00',
-            text: '您的会员一年期限2019年10月10日到期，续费请到门店'
-          },
-          {
-            imgUrl: '../../static/images/60@2x.png',
-            name: '生日到期',
-            time: '17:00',
-            text: '王小明小朋友，双华书院祝你生日快乐，天天开心'
-          },
-          {
-            imgUrl: '../../static/images/58@2x.png',
-            name: '上课到期',
-            time: '17:00',
-            text: '您的汉语课程明天上午10点开始，请注意时间'
-          }
-        ]
       }
     },
-    mounted() {
-      this.$nextTick(() => {
-        new BScroll('.scroll_wrap', {
-          click: true
+    methods: {
+      _initScroll() {
+        this.$nextTick(() => {
+          if (!this.scroll) {
+            this.scroll = new BScroll('.scroll_wrap', {
+              click: true
+            })
+          } else {
+            this.scroll.refresh()
+          }
         })
-      })
+      },
     },
+    computed: {
+      ...mapState(['myInform'])
+    },
+    watch: {
+      myInform: function (value) {
+        this._initScroll()
+      }
+    }
   }
 </script>
 
@@ -129,4 +96,10 @@
               line-height 40px
               font-size 26px
               width 460px
+      .noMsg
+        width 100%
+        margin-top 150px
+        text-align: center
+        color #aaa
+        font-size 28px
 </style>

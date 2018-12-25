@@ -18,21 +18,41 @@
         <input type="password" v-model="affirmPwd" class="lefttwo" placeholder="确认新密码">
       </li>
     </ul>
-    <div class="save_btn">保存</div>
-    <ul></ul>
+    <div class="save_btn" @click="save">保存</div>
+    <Toast ref="toast"/>
   </section>
 </template>
 
 <script>
+  import {reqResetPassword} from '../../../api'
+
   export default {
     name: "ChangePwd",
-    data(){
-      return{
+    data() {
+      return {
         title: '修改密码',
         oldPwd: '', //旧密码
         newPwd: '', //新密码
-        affirmPwd: '' //确认密码
+        affirmPwd: '',//确认密码
+        isShow: true
       }
+    },
+    methods: {
+      async save() {
+        const {oldPwd, newPwd, affirmPwd} = this;
+        if (!oldPwd) {
+          this.$refs.toast.hintHide('请输入旧密码！');
+        } else if (!newPwd) {
+          this.$refs.toast.hintHide('请输入新密码！');
+        } else if (!affirmPwd) {
+          this.$refs.toast.hintHide('请确认新密码！');
+        } else if (newPwd !== affirmPwd) {
+          this.$refs.toast.hintHide('请确保两次新密码输入一致！');
+        } else {
+          const result = await reqResetPassword();
+          this.$refs.toast.hintHide(result.msg)
+        }
+      },
     }
   }
 </script>

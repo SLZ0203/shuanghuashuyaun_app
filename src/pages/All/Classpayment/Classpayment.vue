@@ -7,9 +7,9 @@
     <div class="class_info">
       <img src="../../../../static/images/12@2x.png">
       <div>
-        <p class="class_name">爱贝汉语早教课程</p>
-        <p class="class_time">10课时</p>
-        <p class="class_price">1000日元/62人民币</p>
+        <p class="class_name">{{course_name}}</p>
+        <p class="class_time">{{class_hour}}课时</p>
+        <p class="class_price">{{course_price_yen}}日元/{{course_price_rmb}}人民币</p>
       </div>
     </div>
     <ul class="coupon_list">
@@ -22,7 +22,7 @@
       </li>
       <li class="cou_item">
         <div class="name">课程金额</div>
-        <div class="content">1000日元/62人民币</div>
+        <div class="content">{{course_price_yen}}日元/{{course_price_rmb}}人民币</div>
       </li>
       <li class="cou_item">
         <div class="name">课程总额</div>
@@ -61,7 +61,11 @@
       return {
         title: '课程付款',
         num: "",
-        isChecked: false//会员合同选择
+        isChecked: false,//会员合同选择
+        course_name: this.$route.query.course_name,
+        class_hour: this.$route.query.class_hour,
+        course_price_yen: this.$route.query.course_price_yen,
+        course_price_rmb: this.$route.query.course_price_rmb
       }
     },
     methods: {

@@ -8,7 +8,7 @@
       <ul class="news_list">
         <li class="news_item" v-for="(n,index) in news" :key="index"
             @click="$router.push('news_detail')">
-          <img :src="'http://shedu.581vv.com'+n.news_pic">
+          <img v-lazy="'http://shedu.581vv.com'+n.news_pic">
           <div class="inner_wrap">
             <p class="pro_name">{{n.news_title}}</p>
             <div class="pro_data">

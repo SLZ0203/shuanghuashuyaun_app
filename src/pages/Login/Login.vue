@@ -30,11 +30,11 @@
       <img src="../../../static/images/4@2x.png" class="wechat_img">
       <p>微信登录</p>
     </div>
+    <Toast ref="toast"/>
   </section>
 </template>
 
 <script>
-  import {Toast} from 'mint-ui'
   import {reqEmailLogin} from '../../api'
 
   export default {
@@ -50,25 +50,25 @@
         const {email, password} = this;
         //前台表单验证
         if (!this.email) {
-          return Toast('邮箱不能为空')
+          return this.$refs.toast.hintHide('邮箱不能为空')
         } else if (!this.password) {
-          return Toast('密码不能为空')
+          return this.$refs.toast.hintHide('密码不能为空')
         } else if (!this.isRightEmail) {
-          return Toast('请输入正确的邮箱')
+          return this.$refs.toast.hintHide('请输入正确的邮箱')
         } else {
           //登录的请求
           const result = await reqEmailLogin(email, password);
           if (result.code === 404) {
             if (result.msg === '用户不存在') {
-              Toast(result.msg + '，请您注册');
+              this.$refs.toast.hintHide(result.msg + '，请您注册');
               this.timer = setTimeout(() => {
                 this.$router.replace('/register')
               }, 2000)
             } else {
-              Toast(result.msg)
+              this.$refs.toast.hintHide(result.msg)
             }
           } else {
-            Toast(result.msg);
+            this.$refs.toast.hintHide(result.msg);
             const user = result.data;
             //保存用户信息
             this.$store.dispatch('saveUser', user);

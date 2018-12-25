@@ -3,15 +3,15 @@
   <section class="all_wrap">
     <HeaderTop :title="title"></HeaderTop>
     <nav class="header_nav">
-      <div class="item" :class="{on:num===0}" @click="changeOne(0)">课程价格</div>
+      <div class="item" :class="{on:num===0}" @click="changeOne(0,'course_price_rmb')">课程价格</div>
       <div class="item" :class="{on:num===1}" @click="changeOne(1)">课程种类</div>
-      <div class="item" :class="{on:num===2}" @click="changeOne(2)">发布时间</div>
+      <div class="item" :class="{on:num===2}" @click="changeOne(2,'course_times')">发布时间</div>
     </nav>
     <div class="scroll_wrap">
       <ul class="project_list">
-        <li class="project_item" v-for="(pro,index) in course" :key="index"
+        <li class="project_item" v-for="(pro,index) in courseArr" :key="index"
             @click="$router.push('/project_detail')">
-          <img :src="'http://shedu.581vv.com'+pro.course_thumb">
+          <img v-lazy="'http://shedu.581vv.com'+pro.course_thumb">
           <div>
             <p class="pro_name">{{pro.course_name}}</p>
             <span class="pro_year ellipsis">{{pro.course_tags}}</span>
@@ -26,8 +26,8 @@
       </ul>
     </div>
     <ul class="all_project_list" v-show="isShow">
-      <li class="project_item" :class="{active:active===-1}" @click="active=-1">全部</li>
-      <li class="project_item" v-for="(name,index) in courseCate" :key="index" @click="active=index"
+      <li class="project_item" :class="{active:active===-1}" @click="cateCourse(-1)">全部</li>
+      <li class="project_item" v-for="(name,index) in courseCate" :key="index" @click="cateCourse(index,name.cate_id)"
           :class="{active:active===index}">{{name.cate_name}}
       </li>
     </ul>
@@ -40,6 +40,7 @@
   import HeaderTop from '../../components/HeaderTop/HeaderTop'
   import Shade from '../../components/Shade/Shade'
   import {mapState} from 'vuex'
+  import {reqSortCourse, reqCateCourse} from '../../api'
 
   export default {
     name: "All",
@@ -49,172 +50,49 @@
         num: 0,
         active: -1,
         isShow: false,
-        projectList: [
-          {
-            proArr: [
-              {
-                imgUrl: '../static/images/12@2x.png',
-                name: '爱贝汉语早教课程',
-                year: '适合0-6岁',
-                feat: '特色课程',
-                price: '1000日元/62人民币'
-              },
-              {
-                imgUrl: '../static/images/12@2x.png',
-                name: '爱贝汉语早教课程',
-                year: '适合0-6岁',
-                feat: '特色课程',
-                price: '1000日元/62人民币'
-              },
-              {
-                imgUrl: '../static/images/12@2x.png',
-                name: '爱贝汉语早教课程',
-                year: '适合0-6岁',
-                feat: '特色课程',
-                price: '1000日元/62人民币'
-              },
-              {
-                imgUrl: '../static/images/12@2x.png',
-                name: '爱贝汉语早教课程',
-                year: '适合0-6岁',
-                feat: '特色课程',
-                price: '1000日元/62人民币'
-              },
-              {
-                imgUrl: '../static/images/12@2x.png',
-                name: '爱贝汉语早教课程',
-                year: '适合0-6岁',
-                feat: '特色课程',
-                price: '1000日元/62人民币'
-              },
-              {
-                imgUrl: '../static/images/12@2x.png',
-                name: '爱贝汉语早教课程',
-                year: '适合0-6岁',
-                feat: '特色课程',
-                price: '1000日元/62人民币'
-              },
-              {
-                imgUrl: '../static/images/12@2x.png',
-                name: '爱贝汉语早教课程',
-                year: '适合0-6岁',
-                feat: '特色课程',
-                price: '1000日元/62人民币'
-              },
-            ]
-          },
-          {
-            proArr: [
-              {
-                imgUrl: '../static/images/12@2x.png',
-                name: '爱贝英语早教课程',
-                year: '适合0-6岁',
-                feat: '特色课程',
-                price: '1000日元/62人民币'
-              },
-              {
-                imgUrl: '../static/images/12@2x.png',
-                name: '爱贝英语早教课程',
-                year: '适合0-6岁',
-                feat: '特色课程',
-                price: '1000日元/62人民币'
-              },
-              {
-                imgUrl: '../static/images/12@2x.png',
-                name: '爱贝英语早教课程',
-                year: '适合0-6岁',
-                feat: '特色课程',
-                price: '1000日元/62人民币'
-              },
-              {
-                imgUrl: '../static/images/12@2x.png',
-                name: '爱贝英语早教课程',
-                year: '适合0-6岁',
-                feat: '特色课程',
-                price: '1000日元/62人民币'
-              },
-              {
-                imgUrl: '../static/images/12@2x.png',
-                name: '爱贝英语早教课程',
-                year: '适合0-6岁',
-                feat: '特色课程',
-                price: '1000日元/62人民币'
-              },
-              {
-                imgUrl: '../static/images/12@2x.png',
-                name: '爱贝英语早教课程',
-                year: '适合0-6岁',
-                feat: '特色课程',
-                price: '1000日元/62人民币'
-              },
-            ]
-          },
-          {
-            proArr: [
-              {
-                imgUrl: '../static/images/12@2x.png',
-                name: '爱贝汉语早教课程',
-                year: '适合0-6岁',
-                feat: '特色课程',
-                price: '1000日元/62人民币'
-              },
-              {
-                imgUrl: '../static/images/12@2x.png',
-                name: '爱贝汉语早教课程',
-                year: '适合0-6岁',
-                feat: '特色课程',
-                price: '1000日元/62人民币'
-              },
-              {
-                imgUrl: '../static/images/12@2x.png',
-                name: '爱贝汉语早教课程',
-                year: '适合0-6岁',
-                feat: '特色课程',
-                price: '1000日元/62人民币'
-              },
-              {
-                imgUrl: '../static/images/12@2x.png',
-                name: '爱贝汉语早教课程',
-                year: '适合0-6岁',
-                feat: '特色课程',
-                price: '1000日元/62人民币'
-              },
-              {
-                imgUrl: '../static/images/12@2x.png',
-                name: '爱贝汉语早教课程',
-                year: '适合0-6岁',
-                feat: '特色课程',
-                price: '1000日元/62人民币'
-              },
-              {
-                imgUrl: '../static/images/12@2x.png',
-                name: '爱贝汉语早教课程',
-                year: '适合0-6岁',
-                feat: '特色课程',
-                price: '1000日元/62人民币'
-              },
-            ]
-          },
-        ],
+        courseArr: [],
+        sortNum: true
       }
     },
     mounted() {
       //获取课程
       this.$store.dispatch('getCourse', () => {
+        this.courseArr = this.course;
         this._initScroll();
       });
       //获取课程分类
       this.$store.dispatch('getCourseCate')
     },
     methods: {
-      //tab切换
-      changeOne(index) {
+      //tab切换及排序
+      async changeOne(index, sortType) {
         this.num = index;
         if (index === 1) {
           this.isShow = !this.isShow
         } else {
-          this.isShow = false
+          this.isShow = false;
+          this.sortNum = !this.sortNum;
+          let sort;
+          if (this.sortNum === true) {
+            sort = 1
+          } else {
+            sort = 2
+          }
+          const result = await reqSortCourse(sortType,sort);
+          this.courseArr = result.data;
         }
+      },
+      //课程分类
+      async cateCourse(index, cateId) {
+        this.active = index;
+        if (index === -1) {
+          this.$store.dispatch('getCourse');
+          this.courseArr = this.course
+        } else {
+          const result = await reqCateCourse(cateId);
+          this.courseArr = result.data
+        }
+        this.isShow = false
       },
       //初始化滚动
       _initScroll() {

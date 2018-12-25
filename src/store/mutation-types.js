@@ -14,4 +14,9 @@ export const RECEIVE_COURSE = 'receive_course'; //接收课程列表
 export const RECEIVE_COURSEDETAIL = 'receive_coursedetail'; //接收课程详情
 export const RECEIVE_COURSECATE = 'receive_coursecate'; //接收课程分类
 export const RECEIVE_COUPONS = 'receive_coupons'; //接收优惠券
+export const RECEIVE_MYCOURSE = 'receive_mycourse'; //接收我的课程列表
+export const RECEIVE_MYEXPENSE = 'receive_myexpense'; //接收我的消费明细
+export const RECEIVE_MYCOUPONS = 'receive_mycoupons'; //接收我的优惠券
+export const RECEIVE_INFORM = 'receive_inform'; //接收我的消息列表
+export const RECEIVE_ABOUT = 'receive_about'; //接收关于我们
 

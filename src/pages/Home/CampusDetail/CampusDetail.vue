@@ -6,7 +6,7 @@
     </HeaderTop>
     <section class="scroll_wrap">
       <div class="inner_box">
-        <img :src="'http://shedu.581vv.com'+schoolDetail.school_thumb" class="banner">
+        <img v-lazy="'http://shedu.581vv.com'+schoolDetail.school_thumb" class="banner">
         <ul class="school_info">
           <li class="school_name">{{schoolDetail.school_name}}</li>
           <li class="info_item address">{{schoolDetail.school_position}}</li>
