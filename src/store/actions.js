@@ -46,8 +46,10 @@ export default {
     commit(RECEIVE_USER, {user})
   },
   //退出登录
-  loginOut({commit}) {
-    commit(RESET_USER)
+  loginOut({commit},cb) {
+    commit(RESET_USER);
+    // 在更新状态后立即调用
+    typeof cb === 'function' && cb()
   },
   //发异步请求获取首页轮播图
   async getBanner({commit}, cb) {

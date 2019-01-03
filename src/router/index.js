@@ -31,7 +31,7 @@ import LeaveWord from '../pages/Mine/LeaveWord/LeaveWord'//留言板页面
 
 Vue.use(VueRouter);
 
-export default new VueRouter({
+const router = new VueRouter({
   routes: [
     {
       path: '/',
@@ -130,7 +130,7 @@ export default new VueRouter({
       component: Classpayment,
       meta: {
         showFooter: false,
-        keepAlive: false
+        keepAlive: true
       }
     },
     {
@@ -170,7 +170,7 @@ export default new VueRouter({
       component: Mine,
       meta: {
         showFooter: true,
-        keepAlive: false
+        keepAlive: true
       }
     },
     {
@@ -262,4 +262,25 @@ export default new VueRouter({
       }
     },
   ]
-})
+});
+
+// 所有需要检查是否登陆的path的数组
+const paths = ['/class_payment'];
+router.beforeEach((to, from, next) => {
+  const path = to.path;
+  // 判断是否在需要检查的paths中
+  // 如果在，判断是否已经登陆
+  if (paths.indexOf(path) >= 0) {
+    if (localStorage.getItem('email')) {
+      //如果已登陆,放行
+      next()
+    } else {
+      //如果未登录,跳转到登陆
+      next('/login')
+    }
+  } else {
+    //如果不在, 直接放行
+    next()
+  }
+});
+export default router

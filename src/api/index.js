@@ -5,9 +5,11 @@ import ajax from './ajax'
 
 const baseUrl = 'http://shedu.581vv.com';
 /*登录/注册模块*/
-//用户登录接口
+//用户邮箱登录接口
 export const reqEmailLogin = (email, password) => ajax(baseUrl + '/api/login',
   {email, password}, 'POST');
+//用户微信登录接口
+export const reqWechatLogin = code => ajax(baseUrl + '/api/weixin_login', {code});
 //发送验证码
 export const reqSendCode = email => ajax(baseUrl + '/api/send_email', {email}, 'POST');
 //用户注册接口
@@ -66,12 +68,15 @@ export const reqResetPassword = (member_id, password, new_password) => ajax(base
   password,
   new_password
 }, 'POST');
+//获取用户信息
+export const reqMember = member_id => ajax(baseUrl + '/api/member', {member_id}, 'POST');
 //修改个人资料
-export const reqPersonalEdit = (member_id, member_sex, member_birthday,
+export const reqPersonalEdit = (member_id, member_realname, member_sex, member_birthday,
                                 member_detail_addr, member_industry, member_phone,
                                 member_wechat_no, member_headpic) => ajax(baseUrl + '/api/personal_edit',
   {
     member_id,
+    member_realname,
     member_sex,
     member_birthday,
     member_detail_addr,
@@ -91,11 +96,11 @@ export const reqEditChildren = (member_id, children) => ajax(baseUrl + '/api/edi
 //我的课程
 export const reqMyCourse = member_id => ajax(baseUrl + '/api/my_course', {member_id});
 //我的消费记录
-export const reqExpense = member_id => ajax(baseUrl + '/api/expense',{member_id});
+export const reqExpense = member_id => ajax(baseUrl + '/api/expense', {member_id});
 //我的优惠券
-export const reqMyCoupons = member_id => ajax(baseUrl + '/api/my_coupons',{member_id});
+export const reqMyCoupons = member_id => ajax(baseUrl + '/api/my_coupons', {member_id});
 //我的通知
-export const reqInform = member_id => ajax(baseUrl + '/api/inform',{member_id});
+export const reqInform = member_id => ajax(baseUrl + '/api/inform', {member_id});
 //关于我们
 export const reqAbout = () => ajax(baseUrl + '/api/about');
 //留言板

@@ -65,7 +65,9 @@
         course_name: this.$route.query.course_name,
         class_hour: this.$route.query.class_hour,
         course_price_yen: this.$route.query.course_price_yen,
-        course_price_rmb: this.$route.query.course_price_rmb
+        course_price_rmb: this.$route.query.course_price_rmb,
+        full: this.$route.query.full,
+        sub: this.$route.query.sub,
       }
     },
     methods: {

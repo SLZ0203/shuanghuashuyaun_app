@@ -20,7 +20,7 @@
   @import "../../../static/css/mixins.styl"
   .header_title
     position relative
-    z-index 100
+    z-index 1
     text-align: center
     width 100%
     padding 40px 0

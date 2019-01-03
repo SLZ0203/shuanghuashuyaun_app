@@ -54,11 +54,13 @@
     background rgba(255, 255, 255, 1)
     .scroll_wrap
       width 100%
-      height 100%
+      position fixed
+      top 117px
+      bottom 0
       overflow hidden
       .project_list
         width 100%
-        padding 0 30px 118px
+        padding 0 30px
         box-sizing border-box
         .project_item
           width 100%

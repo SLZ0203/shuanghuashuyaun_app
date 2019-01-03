@@ -8,7 +8,7 @@
           <div class="swiper-container">
             <ul class="swiper-wrapper">
               <li class="swiper-slide" v-for="(ban,index) in banner" :key="index">
-                <img v-lazy="'http://shedu.581vv.com'+ban.banner_pic">
+                <img :src="'http://shedu.581vv.com'+ban.banner_pic">
               </li>
             </ul>
             <div class="swiper-pagination"></div>
@@ -102,23 +102,9 @@
       this._initScroll();
     },
     methods: {
-      _initScroll() {
-        if (!this.myscroll) {
-          this.myscroll = new BScroll('.scroll_wrap', {
-            click: true
-          })
-        } else {
-          this.myscroll.refresh()
-        }
-      },
-    },
-    computed: {
-      ...mapState(['banner', 'hotNews', 'hotCourse'])
-    },
-    watch: {
-      banner(value) {
+      _initSwiper() {
         this.$nextTick(() => {
-          this.mySwiper = new Swiper('.swiper-container', {
+          new Swiper('.swiper-container', {
             loop: true, // 循环模式选项
             autoplay: true,
             // 如果需要分页器
@@ -127,6 +113,25 @@
             },
           })
         })
+      },
+      _initScroll() {
+        this.$nextTick(() => {
+          if (!this.myscroll) {
+            this.myscroll = new BScroll('.scroll_wrap', {
+              click: true
+            })
+          } else {
+            this.myscroll.refresh()
+          }
+        })
+      },
+    },
+    computed: {
+      ...mapState(['banner', 'hotNews', 'hotCourse'])
+    },
+    watch: {
+      banner(value) {
+        this._initSwiper()
       }
     }
   }
@@ -140,11 +145,13 @@
     height: 100%
     .scroll_wrap
       width 100%
-      height 100%
+      position fixed
+      top 118px
+      left 0
+      bottom 120px
       overflow hidden
       .outer_wrap
         width 100%
-        padding-bottom 230px
         .banner_wrap
           width 100%
           height 360px

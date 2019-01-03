@@ -8,22 +8,25 @@
       <div class="item" :class="{on:num===2}" @click="changeOne(2,'course_times')">发布时间</div>
     </nav>
     <div class="scroll_wrap">
-      <ul class="project_list">
-        <li class="project_item" v-for="(pro,index) in courseArr" :key="index"
-            @click="$router.push('/project_detail')">
-          <img v-lazy="'http://shedu.581vv.com'+pro.course_thumb">
-          <div>
-            <p class="pro_name">{{pro.course_name}}</p>
-            <span class="pro_year ellipsis">{{pro.course_tags}}</span>
-            <span class="pro_feat ellipsis">{{pro.course_introduction}}</span>
-            <p class="pro_price">
-              <span>{{pro.course_price_yen}}日元</span>
-              <span>/</span>
-              <span>{{pro.course_price_rmb}}人民币</span>
-            </p>
-          </div>
-        </li>
-      </ul>
+      <div>
+        <ul class="project_list">
+          <li class="project_item" v-for="(pro,index) in courseArr" :key="index"
+              @click="$router.push('/project_detail')">
+            <img v-lazy="'http://shedu.581vv.com'+pro.course_thumb">
+            <div>
+              <p class="pro_name">{{pro.course_name}}</p>
+              <span class="pro_year ellipsis">{{pro.course_tags}}</span>
+              <span class="pro_feat ellipsis">{{pro.course_introduction}}</span>
+              <p class="pro_price">
+                <span>{{pro.course_price_yen}}日元</span>
+                <span>/</span>
+                <span>{{pro.course_price_rmb}}人民币</span>
+              </p>
+            </div>
+          </li>
+        </ul>
+        <div class="tipText" v-if="!courseArr">暂时没有课程，敬请期待</div>
+      </div>
     </div>
     <ul class="all_project_list" v-show="isShow">
       <li class="project_item" :class="{active:active===-1}" @click="cateCourse(-1)">全部</li>
@@ -78,8 +81,10 @@
           } else {
             sort = 2
           }
-          const result = await reqSortCourse(sortType,sort);
-          this.courseArr = result.data;
+          const result = await reqSortCourse(sortType, sort);
+          if (result.code === 200) {
+            this.courseArr = result.data;
+          }
         }
       },
       //课程分类
@@ -90,7 +95,9 @@
           this.courseArr = this.course
         } else {
           const result = await reqCateCourse(cateId);
-          this.courseArr = result.data
+          if (result.code === 200) {
+            this.courseArr = result.data
+          }
         }
         this.isShow = false
       },
@@ -131,7 +138,6 @@
       background #fff
       justify-content space-between
       position relative
-      z-index 100
       bottom-border-1px(#666)
       .item
         font-size 26px
@@ -148,11 +154,14 @@
           background-size 18px 12px
     .scroll_wrap
       width 100%
-      height 100%
+      position fixed
+      top 188px
+      left 0
+      bottom 120px
       overflow hidden
       .project_list
         width 100%
-        padding 0 30px 320px
+        padding 0 30px 0
         box-sizing border-box
         background rgba(255, 255, 255, 1)
         &.bottom
@@ -188,6 +197,13 @@
             margin-top 26px
             font-size 30px
             color #FE5F35
+      .tipText
+        text-align: center
+        position absolute
+        top 50%
+        left 50%
+        transform translate(-50%, -50%)
+        color #7e8c8d
     .all_project_list
       width 100%
       background #fff

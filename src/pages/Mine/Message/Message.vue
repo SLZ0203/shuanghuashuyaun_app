@@ -65,10 +65,14 @@
     background #fff
     .scroll_wrap
       width 100%
-      height 100%
+      position fixed
+      top 120px
+      left 0
+      bottom 0
+      overflow hidden
       .msg_list
         width 100%
-        padding 0 30px 120px
+        padding 0 30px
         box-sizing border-box
         .msg_item
           width 100%

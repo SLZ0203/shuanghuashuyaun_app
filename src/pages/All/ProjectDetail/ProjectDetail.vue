@@ -89,11 +89,12 @@
     height 100%
     .scroll_wrap
       width 100%
-      height 100%
+      position fixed
+      top 117px
+      bottom 100px
       overflow hidden
       .scroll_inner
         width 100%
-        padding-bottom 227px
         .banner
           width 100%
           height 422px

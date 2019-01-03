@@ -55,10 +55,12 @@
     background #fff
     .scroll_wrap
       width 100%
-      height 100%
+      position fixed
+      top 117px
+      bottom 0
+      overflow hidden
       .inner_box
         width 100%
-        padding-bottom 120px
         .news_title, .news_time
           width 100%
           text-align: center

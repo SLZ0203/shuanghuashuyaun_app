@@ -6,10 +6,11 @@
       <span class="save" slot="save" @click="saveSub">保存</span>
     </HeaderTop>
     <ul class="user_info_list">
-      <li class="info_item avatar">
+      <li class="info_item avatar" @click="setShow=true">
         <div class="info_one">我的头像</div>
         <div>
-          <img v-lazy="'http://shedu.581vv.com'+user.member_headpic" class="header_img">
+          <img v-lazy="'http://shedu.581vv.com'+user.member_headpic" class="header_img" v-if="user.member_headpic">
+          <img src="../../../../static/images/36@2x.png" class="header_img" v-else>
           <img src="../../../../static/images/5@2x.png" class="more">
         </div>
       </li>
@@ -76,7 +77,13 @@
         </ul>
       </div>
     </div>
-    <Shade v-show="chooseShow"/>
+    <ul class="more_list" v-show="setShow">
+      <li class="more_item border">拍照</li>
+      <li class="more_item border">从手机相册选取</li>
+      <li class="more_item border">保存图片</li>
+      <li class="more_item bigTop" @click="setShow=false">取消</li>
+    </ul>
+    <Shade v-show="chooseShow||setShow"/>
   </section>
 </template>
 
@@ -91,21 +98,22 @@
     data() {
       return {
         title: '我的资料',
-        name: '',
-        sex: '',
+        name: '', //姓名
+        sex: '', //性别
         sexId: '',
-        birthday: '',
-        city: '',
+        birthday: '', //出生年月
+        address: '', //详细地址
         industry: '', //所在行业
-        phone: '',
-        LineID: '',
-        email: '',
-        wechat: '',
+        phone: '', //电话号码
+        LineID: '', //LineID
+        email: '', //电子邮箱
+        wechat: '',//微信号
         chooseShow: false,
         chooseTitle: '',
         chooseOne: [],
         chooseNum: 0,
         isHeight: false,
+        setShow: false
       }
     },
     methods: {
@@ -120,7 +128,6 @@
           this.chooseOne = ['计算机/互联网/通信/电子', '计算机硬件', '计算机软件', '互联网开发及应用',
             'IT-管理', 'IT-品管、技术支持及其它', '通信技术', '电子/电器/半导体/仪器仪表', '销售/客服/技术支持',
             '销售管理', '销售人员', '销售行政及商务', '客服及技术支持', '会计/金融/银行/保险', '财务/审计/税务', '证券/金融/投资'];
-          this._initScroll()
         }
         this.chooseShow = true;
       },
@@ -165,6 +172,11 @@
     },
     components: {
       Shade
+    },
+    watch: {
+      chooseOne(value) {
+        this._initScroll()
+      }
     }
   }
 </script>
@@ -207,6 +219,7 @@
         height 111px
         border-radius 50%
         margin-right 20px
+        border 2px solid #7e8c8d
 
   .choose_wrap
     width 100%
@@ -246,5 +259,22 @@
           font-size 30px
           &.check
             background #eee
+
+  .more_list
+    width 100%
+    position fixed
+    bottom 0
+    z-index 10
+    .more_item
+      width 100%
+      text-align: center
+      height 100px
+      line-height 100px
+      font-size 30px
+      background #fff
+    .border
+      bottom-border-1px(#999)
+    .bigTop
+      margin-top 3px
 </style>
 

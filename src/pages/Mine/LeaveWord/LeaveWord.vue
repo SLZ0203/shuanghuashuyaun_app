@@ -8,14 +8,13 @@
       <textarea placeholder="请写下您的留言" v-model="message_center"></textarea>
       <div class="save_btn" @click="submit">提 交</div>
     </div>
-    <Toast ref="toast"/>
   </section>
 </template>
 
 <script>
   import {mapState} from 'vuex'
   import {reqMessage} from "../../../api";
-
+  import {Toast} from 'mint-ui'
   export default {
     name: "LeaveWord",
     data() {
@@ -31,7 +30,7 @@
           this.message_center
         );
         if (result.code === 200) {
-          this.$refs.toast.hintHide(result.msg);
+          Toast(result.msg);
           setTimeout(() => {
             this.message_center = ''
           }, 3000)

@@ -98,10 +98,13 @@
     background #fff
     .scroll_wrap
       width 100%
-      height 100%
+      position fixed
+      top 118px
+      left 0
+      bottom 0
+      overflow hidden
       .inner_box
         width 100%
-        padding-bottom 120px
       .invitation
         width 100%
         height 438px

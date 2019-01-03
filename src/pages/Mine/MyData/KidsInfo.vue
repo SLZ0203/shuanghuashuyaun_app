@@ -4,7 +4,7 @@
       <img src="../../../../static/images/21@2x.png" slot="return" class="return" @click="$router.back()">
     </HeaderTop>
     <section class="scroll_wrap">
-      <div class="inner_box">
+      <div>
         <ul class="user_info_list">
           <li class="user_info_item">
             <ul>
@@ -93,10 +93,11 @@
     height 100%
     .scroll_wrap
       width 100%
-      height 100%
-      .inner_box
-        width 100%
-        padding-bottom 180px
+      position fixed
+      top 118px
+      left 0
+      bottom 0
+      overflow hidden
       .user_info_list
         width 100%
         padding 0 34px

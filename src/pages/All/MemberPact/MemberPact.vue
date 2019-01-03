@@ -5,7 +5,7 @@
       <img src="../../../../static/images/21@2x.png" slot="return" class="return" @click="$router.back()">
     </HeaderTop>
     <div class="scroll_wrap">
-      <div class="scroll_inner">
+      <div>
         <p class="title">《会员合同》</p>
         <p class="content">
           本服务条款约定随身云与您之间关于“会员”服务的各项事项。
@@ -76,25 +76,24 @@
     height 100%
     .scroll_wrap
       width 100%
-      height 100%
-      background #fff
+      position fixed
+      top 117px
+      bottom 100px
       overflow hidden
-      .scroll_inner
+      background #fff
+      .title
         width 100%
-        padding-bottom 230px
-        .title
-          width 100%
-          height 120px
-          text-align: center
-          line-height 120px
-          font-size 34px
-        .content
-          width 100%
-          padding 0 30px
-          box-sizing border-box
-          text-indent 48px
-          font-size 24px
-          line-height 48px
+        height 120px
+        text-align: center
+        line-height 120px
+        font-size 34px
+      .content
+        width 100%
+        padding 0 30px
+        box-sizing border-box
+        text-indent 48px
+        font-size 24px
+        line-height 48px
     .agree_btn
       width 100%
       height 100px

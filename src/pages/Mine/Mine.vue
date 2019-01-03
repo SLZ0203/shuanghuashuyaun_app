@@ -6,7 +6,8 @@
       <div class="inner_wrap">
         <div class="user_info">
           <div class="inner">
-            <img v-lazy="'http://shedu.581vv.com'+user.member_headpic">
+            <img v-lazy="'http://shedu.581vv.com'+user.member_headpic" v-if="user.member_headpic">
+            <img src="../../../static/images/36@2x.png" v-else>
             <div>
               <div v-if="user.member_nickname">
                 <p class="user_name">{{user.member_nickname}}</p>
@@ -74,7 +75,7 @@
             <img src="../../../static/images/5@2x.png" class="more">
           </li>
         </ul>
-        <div class="exit" @click="isShow=true" v-show="loginShow">退出登录</div>
+        <div class="exit" @click="isShow=true" v-show="user.member_id">退出登录</div>
       </div>
     </section>
     <Shade v-show="isShow"/>
@@ -121,8 +122,8 @@
       loginOut() {
         this.$store.dispatch('loginOut', () => {
           this.isShow = false;
-          this.loginShow = false;
-          this.myscroll.refresh()
+          this.myscroll.refresh();
+          localStorage.clear();
         });
       }
     },
@@ -142,10 +143,13 @@
     height 100%
     .scroll_wrap
       width 100%
-      height 100%
+      position fixed
+      top 118px
+      left 0
+      bottom 120px
+      overflow hidden
       .inner_wrap
         width 100%
-        padding-bottom 238px
         .user_info
           width 100%
           height 278px
@@ -162,7 +166,8 @@
             align-items center
             img
               width 131px
-              height 132px
+              height 131px
+              border 3px solid #fff
               border-radius 50%
               margin 0 20px 0 47px
             .user_name

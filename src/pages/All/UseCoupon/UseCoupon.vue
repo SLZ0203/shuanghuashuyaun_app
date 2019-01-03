@@ -10,16 +10,16 @@
     </div>
     <section class="scroll_wrap">
       <ul class="coupon_list">
-        <li class="coupon_item" v-for="(cou,index) in coupons" :key="index" @click="checkCoupon(index)">
+        <li class="coupon_item" v-for="(cou,index) in couponList" :key="index" @click="checkCoupon(cou,index)">
           <div class="left_wrap">
             <span class="money">￥</span>
-            <span class="num">{{cou.money}}</span>
-            <div class="full">{{cou.full}}</div>
+            <span class="num">{{cou.coupon_quota_rmb}}</span>
+            <div class="full">满{{cou.coupon_condition_rmb}}使用</div>
           </div>
           <div class="right_wrap">
             <div>
-              <p class="buy">{{cou.buy}}</p>
-              <p class="full_sub">{{cou.sub}}</p>
+              <p class="buy">{{cou.coupon_name}}</p>
+              <p class="full_sub">满{{cou.coupon_condition_rmb}}减{{cou.coupon_quota_rmb}}</p>
             </div>
             <div class="checkdiv" :class="{on:thatNum===index}"></div>
           </div>
@@ -42,52 +42,15 @@
         thatNum: '',
         couponList: [
           {
-            money: '50',
-            full: '满400使用',
-            buy: '购买课程抵扣券',
-            sub: '满400减50'
+            coupon_quota_rmb: '50',
+            coupon_condition_rmb: '500',
+            coupon_name: '购买课程抵扣券',
           },
           {
-            money: '100',
-            full: '满600使用',
-            buy: '购买课程抵扣券',
-            sub: '满600减100'
+            coupon_quota_rmb: '100',
+            coupon_condition_rmb: '1000',
+            coupon_name: '购买课程抵扣券',
           },
-          {
-            money: '200',
-            full: '满1000使用',
-            buy: '购买课程抵扣券',
-            sub: '满1000减200'
-          },
-          {
-            money: '200',
-            full: '满1000使用',
-            buy: '购买课程抵扣券',
-            sub: '满1000减200'
-          },
-          {
-            money: '200',
-            full: '满1000使用',
-            buy: '购买课程抵扣券',
-            sub: '满1000减200'
-          }, {
-            money: '200',
-            full: '满1000使用',
-            buy: '购买课程抵扣券',
-            sub: '满1000减200'
-          }, {
-            money: '200',
-            full: '满1000使用',
-            buy: '购买课程抵扣券',
-            sub: '满1000减200'
-          }, {
-            money: '200',
-            full: '满1000使用',
-            buy: '购买课程抵扣券',
-            sub: '满1000减200'
-          },
-
-
         ]
       }
     },
@@ -96,13 +59,18 @@
         this.isChecked = !this.isChecked;
         if (this.isChecked) {
           this.thatNum = '';
-          this.$router.back()
         }
       },
-      checkCoupon(index) {
+      checkCoupon(cou, index) {
         this.thatNum = index;
         this.isChecked = false;
-        this.$router.back();
+        this.$router.replace({
+          path: '/class_payment',
+          query: {
+            full: cou.coupon_condition_rmb,
+            sub: cou.coupon_quota_rmb
+          }
+        })
       }
     },
     mounted() {
@@ -112,7 +80,7 @@
         })
       })
     },
-    computed:{
+    computed: {
       ...mapState(['coupons'])
     }
   }

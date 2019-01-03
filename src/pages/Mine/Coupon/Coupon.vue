@@ -107,9 +107,11 @@
           border-bottom 5px solid $main
     .scroll_wrap
       width 100%
-      height 100%
+      position fixed
+      top 170px
+      left 0
+      bottom 0
       overflow hidden
-      margin-top 30px
       .inner_wrap
         width 100%
         padding-bottom 200px

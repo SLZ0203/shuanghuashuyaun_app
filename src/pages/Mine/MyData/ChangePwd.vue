@@ -19,12 +19,12 @@
       </li>
     </ul>
     <div class="save_btn" @click="save">保存</div>
-    <Toast ref="toast"/>
   </section>
 </template>
 
 <script>
   import {reqResetPassword} from '../../../api'
+  import {Toast} from 'mint-ui'
 
   export default {
     name: "ChangePwd",
@@ -41,16 +41,16 @@
       async save() {
         const {oldPwd, newPwd, affirmPwd} = this;
         if (!oldPwd) {
-          this.$refs.toast.hintHide('请输入旧密码！');
+          return Toast('请输入旧密码！');
         } else if (!newPwd) {
-          this.$refs.toast.hintHide('请输入新密码！');
+          return Toast('请输入新密码！');
         } else if (!affirmPwd) {
-          this.$refs.toast.hintHide('请确认新密码！');
+          return Toast('请确认新密码！');
         } else if (newPwd !== affirmPwd) {
-          this.$refs.toast.hintHide('请确保两次新密码输入一致！');
+          return Toast('请确保两次新密码输入一致！');
         } else {
           const result = await reqResetPassword();
-          this.$refs.toast.hintHide(result.msg)
+          Toast(result.msg)
         }
       },
     }
