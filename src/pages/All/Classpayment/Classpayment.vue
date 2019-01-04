@@ -5,11 +5,11 @@
       <img src="../../../../static/images/21@2x.png" slot="return" class="return" @click="$router.back()">
     </HeaderTop>
     <div class="class_info">
-      <img src="../../../../static/images/12@2x.png">
+      <img v-lazy="'http://shedu.581vv.com'+detail.course_thumb">
       <div>
-        <p class="class_name">{{course_name}}</p>
-        <p class="class_time">{{class_hour}}课时</p>
-        <p class="class_price">{{course_price_yen}}日元/{{course_price_rmb}}人民币</p>
+        <p class="class_name">{{detail.course_name}}</p>
+        <p class="class_time">{{detail.course_class_hour}}课时</p>
+        <p class="class_price">{{detail.course_price_yen}}日元/{{detail.course_price_rmb}}人民币</p>
       </div>
     </div>
     <ul class="coupon_list">
@@ -22,11 +22,11 @@
       </li>
       <li class="cou_item">
         <div class="name">课程金额</div>
-        <div class="content">{{course_price_yen}}日元/{{course_price_rmb}}人民币</div>
+        <div class="content">{{detail.course_price_yen}}日元/{{detail.course_price_rmb}}人民币</div>
       </li>
       <li class="cou_item">
         <div class="name">课程总额</div>
-        <div class="content price">1000日元/62人民币</div>
+        <div class="content price">{{detail.course_price_yen}}日元/{{detail.course_price_rmb}}人民币</div>
       </li>
     </ul>
     <ul class="payment_list">
@@ -47,7 +47,7 @@
       <span>同意《会员合同》</span>
     </div>
     <div class="pay_btn">
-      <div class="pay_money">1000日元/62人民币</div>
+      <div class="pay_money">{{detail.course_price_yen}}日元/{{detail.course_price_rmb}}人民币</div>
       <div class="btn" :class="{click:isChecked===true&&num!==''}" @click="goBuy">立即购买</div>
     </div>
   </section>
@@ -62,12 +62,7 @@
         title: '课程付款',
         num: "",
         isChecked: false,//会员合同选择
-        course_name: this.$route.query.course_name,
-        class_hour: this.$route.query.class_hour,
-        course_price_yen: this.$route.query.course_price_yen,
-        course_price_rmb: this.$route.query.course_price_rmb,
-        full: this.$route.query.full,
-        sub: this.$route.query.sub,
+        detail: this.$route.query.detail
       }
     },
     methods: {
@@ -110,12 +105,12 @@
       .class_name
         font-size 34px
         line-height 40px
-        margin 30px 0 20px
+        margin-top 20px
       .class_time
+        margin 20px 0
         font-size 28px
         color #999
       .class_price
-        margin-top 30px
         font-size 30px
         color #FE5F35
     .coupon_list

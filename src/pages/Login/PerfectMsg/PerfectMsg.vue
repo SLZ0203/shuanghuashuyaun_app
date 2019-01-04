@@ -137,6 +137,7 @@
     async mounted() {
       Indicator.open('加载中');
       const result = await reqMember(this.user.member_id);
+      console.log(result);
       if (result.code === 200) {
         this.name = result.data.member_realname;
         this.sex = result.data.member_sex === 1 ? '男' : '女';
@@ -227,6 +228,7 @@
         } else {
           const result = await reqPersonalEdit(
             this.user.member_id,
+            this.name,
             this.sexId,
             this.birthday,
             this.address,

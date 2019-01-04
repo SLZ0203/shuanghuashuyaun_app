@@ -93,6 +93,8 @@
   import {mapState} from 'vuex'
   import BScroll from 'better-scroll'
   import Shade from '../../components/Shade/Shade'
+  import {reqMember} from '../../api'
+  import {Indicator, Toast} from 'mint-ui';
 
   export default {
     name: "Mine",
@@ -100,21 +102,34 @@
       return {
         title: '我的',
         isShow: false,
-        loginShow: true
+        loginShow: true,
       }
     },
-    mounted() {
-      this.$nextTick(() => {
-        if (!this.myscroll) {
-          this.myscroll = new BScroll('.scroll_wrap', {
-            click: true
-          })
-        } else {
-          this.myscroll.refresh()
-        }
-      })
+    async mounted() {
+      Indicator.open();
+      const res = await reqMember(this.member_id);
+      if (res.code === 200) {
+        const user = res.data;
+        this._initScroll();
+        this.$store.dispatch('saveUser', user);
+        Indicator.close()
+      } else {
+        Indicator.close();
+        Toast(res.msg)
+      }
     },
     methods: {
+      _initScroll() {
+        this.$nextTick(() => {
+          if (!this.myscroll) {
+            this.myscroll = new BScroll('.scroll_wrap', {
+              click: true
+            })
+          } else {
+            this.myscroll.refresh()
+          }
+        })
+      },
       goTo(path, action) {
         this.$router.push(path);
         this.$store.dispatch(action)
@@ -125,10 +140,10 @@
           this.myscroll.refresh();
           localStorage.clear();
         });
-      }
+      },
     },
     computed: {
-      ...mapState(['user'])
+      ...mapState(['member_id', 'user'])
     },
     components: {
       Shade

@@ -14,9 +14,6 @@
           {{newsDetail.news_center}}
         </p>
         <img v-lazy="'http://shedu.581vv.com'+newsDetail.news_pic" class="news_img">
-        <p class="news_text">
-          {{newsDetail.news_center}}
-        </p>
       </div>
     </section>
   </section>
@@ -24,26 +21,40 @@
 
 <script>
   import BScroll from 'better-scroll'
-  import {mapState} from 'vuex'
+  import {reqNewsDetail} from '../../../api'
+  import {Indicator, Toast} from 'mint-ui';
 
   export default {
     name: "NewsDetail",
     data() {
       return {
-        title: '新闻详情'
+        title: '新闻详情',
+        news_id: this.$route.query.id,
+        newsDetail: {}
       }
     },
-    mounted() {
-      this.$store.dispatch('getNewsDetail', () => {
-        this.$nextTick(() => {
-          new BScroll('.scroll_wrap', {
+    async mounted() {
+      Indicator.open();
+      const result = await reqNewsDetail(this.news_id);
+      console.log(result);
+      if (result.code === 200) {
+        this.newsDetail = result.data;
+        this._initScroll();
+        Indicator.close()
+      } else {
+        Toast(result.msg)
+      }
+    },
+    methods: {
+      _initScroll() {
+        if (!this.scroll) {
+          this.scroll = new BScroll('.scroll_wrap', {
             click: true
           })
-        })
-      });
-    },
-    computed: {
-      ...mapState(['newsDetail'])
+        } else {
+          this.scroll.refresh()
+        }
+      }
     }
   }
 </script>

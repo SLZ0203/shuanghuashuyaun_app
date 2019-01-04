@@ -23,21 +23,36 @@
 
 <script>
   import BScroll from 'better-scroll'
-  import {mapState} from 'vuex'
+  import {reqSchoolDetail} from '../../../api'
+  import {Indicator, Toast} from 'mint-ui';
 
   export default {
     name: "CampusDetail",
-    mounted() {
-      this.$store.dispatch('getSchoolDetail', () => {
-        this.$nextTick(() => {
-          new BScroll('.scroll_wrap', {
+    data() {
+      return {
+        school_id: this.$route.query.id,
+        schoolDetail: {}
+      }
+    },
+    async mounted() {
+      Indicator.open();
+      const res = await reqSchoolDetail(this.school_id);
+      if (res.code === 200) {
+        this.schoolDetail = res.data;
+        this._initScroll();
+        Indicator.close()
+      }
+    },
+    methods: {
+      _initScroll() {
+        if (!this.scroll) {
+          this.scroll = new BScroll('.scroll_wrap', {
             click: true
           })
-        })
-      });
-    },
-    computed: {
-      ...mapState(['schoolDetail'])
+        } else {
+          this.scroll.refresh()
+        }
+      }
     }
   }
 </script>

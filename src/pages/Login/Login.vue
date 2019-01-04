@@ -38,7 +38,7 @@
 </template>
 
 <script>
-  import {reqEmailLogin, reqUploadImg, reqWechatLogin} from '../../api'
+  import {reqEmailLogin, reqWechatLogin} from '../../api'
   import {mapState} from 'vuex'
   import {Toast} from 'mint-ui'
 
@@ -86,10 +86,10 @@
             }
           } else {
             const user = result.data;
-            //保存用户信息
-            that.$store.dispatch('saveUser', user);
+            //保存用户id
+            that.$store.dispatch('saveMemberId', user.member_id);
             //缓存用户名
-            localStorage.setItem('email', user.member_email);
+            localStorage.setItem('member_id', user.member_id);
             if (user.member_realname && user.member_sex >= 0 && user.member_birthday && user.member_detail_addr && user.member_industry && user.member_phone) {
               Toast(result.msg);
               //跳转到首页
@@ -130,8 +130,8 @@
         this.setCookie('', '', -1)
       },
       //微信登录的请求
-      async wechatLogin() {
-        const result = await reqWechatLogin();
+      wechatLogin() {
+
       },
     },
     computed: {

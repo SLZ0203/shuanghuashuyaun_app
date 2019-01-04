@@ -30,11 +30,11 @@ export const reqBanners = () => ajax(baseUrl + '/api/banners');
 //校区列表
 export const reqSchools = () => ajax(baseUrl + '/api/schools');
 //校区详情
-export const reqSchoolDetail = () => ajax(baseUrl + '/api/school_detail');
+export const reqSchoolDetail = school_id => ajax(baseUrl + '/api/school_detail', {school_id});
 //活动新闻
 export const reqNews = () => ajax(baseUrl + '/api/news');
 //新闻详情
-export const reqNewsDetail = () => ajax(baseUrl + '/api/news_detail');
+export const reqNewsDetail = news_id => ajax(baseUrl + '/api/news_detail', {news_id});
 //热门课程
 export const reqHotCourse = () => ajax(baseUrl + '/api/hot_course');
 //热门新闻
@@ -48,7 +48,7 @@ export const reqSortCourse = (sortType, sort) => ajax(baseUrl + '/api/course', {
 //课程排序列表
 export const reqCateCourse = cateId => ajax(baseUrl + '/api/course', {cateId});
 //课程详情
-export const reqCourseDetail = () => ajax(baseUrl + '/api/detail');
+export const reqCourseDetail = course_id => ajax(baseUrl + '/api/detail', {course_id});
 //课程分类
 export const reqCourseCate = () => ajax(baseUrl + '/api/cate');
 //创建订单
@@ -71,11 +71,12 @@ export const reqResetPassword = (member_id, password, new_password) => ajax(base
 //获取用户信息
 export const reqMember = member_id => ajax(baseUrl + '/api/member', {member_id}, 'POST');
 //修改个人资料
-export const reqPersonalEdit = (member_id, member_sex, member_birthday,
+export const reqPersonalEdit = (member_id, member_realname, member_sex, member_birthday,
                                 member_detail_addr, member_industry, member_phone,
                                 member_wechat_no, member_headpic) => ajax(baseUrl + '/api/personal_edit',
   {
     member_id,
+    member_realname,
     member_sex,
     member_birthday,
     member_detail_addr,

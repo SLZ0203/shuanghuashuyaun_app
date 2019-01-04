@@ -4,13 +4,10 @@
 import {
   reqBanners,
   reqSchools,
-  reqSchoolDetail,
   reqNews,
-  reqNewsDetail,
   reqHotCourse,
   reqHotNews,
   reqCourse,
-  reqCourseDetail,
   reqCourseCate,
   reqCoupons,
   reqMyCourse,
@@ -21,17 +18,15 @@ import {
 } from '../api'
 
 import {
+  RECEIVE_MEMBER_ID,
   RECEIVE_USER,
   RESET_USER,
   RECEIVE_BANNER,
   RECEIVE_SCHOOLS,
-  RECEIVE_SCHOOLDETAIL,
   RECEIVE_NEWS,
-  RECEIVE_NEWSDETAIL,
   RECEIVE_HOTNEWS,
   RECEIVE_HOTCOURSE,
   RECEIVE_COURSE,
-  RECEIVE_COURSEDETAIL,
   RECEIVE_COURSECATE,
   RECEIVE_COUPONS,
   RECEIVE_MYEXPENSE,
@@ -41,12 +36,16 @@ import {
 } from './mutation-types';
 
 export default {
-  // 同步保存用户的action
+  //保存用户id的action
+  saveMemberId({commit}, member_id) {
+    commit(RECEIVE_MEMBER_ID, {member_id});
+  },
+  // 同步保存用户信息的action
   saveUser({commit}, user) {
     commit(RECEIVE_USER, {user})
   },
   //退出登录
-  loginOut({commit},cb) {
+  loginOut({commit}, cb) {
     commit(RESET_USER);
     // 在更新状态后立即调用
     typeof cb === 'function' && cb()
@@ -73,35 +72,14 @@ export default {
       typeof cb === 'function' && cb()
     }
   },
-  //发异步请求获取校区详情
-  async getSchoolDetail({commit}, cb) {
-    const result = await reqSchoolDetail();
-    if (result.code === 200) {
-      const schoolDetail = result.data;
-      //commit给mutation
-      commit(RECEIVE_SCHOOLDETAIL, {schoolDetail});
-      // 在更新状态后立即调用
-      typeof cb === 'function' && cb()
-    }
-  },
   //发异步请求获取活动新闻
   async getNews({commit}, cb) {
     const result = await reqNews();
+    console.log(result);
     if (result.code === 200) {
       const news = result.data;
       //commit给mutation
       commit(RECEIVE_NEWS, {news});
-      // 在更新状态后立即调用
-      typeof cb === 'function' && cb()
-    }
-  },
-  //发异步请求获取新闻详情
-  async getNewsDetail({commit}, cb) {
-    const result = await reqNewsDetail();
-    if (result.code === 200) {
-      const newsDetail = result.data;
-      //commit给mutation
-      commit(RECEIVE_NEWSDETAIL, {newsDetail});
       // 在更新状态后立即调用
       typeof cb === 'function' && cb()
     }
@@ -150,17 +128,6 @@ export default {
       typeof cb === 'function' && cb()
     }
   },
-  //发异步请求获取课程详情
-  async getCourseDetail({commit}, cb) {
-    const result = await reqCourseDetail();
-    if (result.code === 200) {
-      const courseDetail = result.data;
-      //commit给mutation
-      commit(RECEIVE_COURSEDETAIL, {courseDetail});
-      // 在更新状态后立即调用
-      typeof cb === 'function' && cb()
-    }
-  },
   //发异步请求获取课程分类
   async getCourseCate({commit}, cb) {
     const result = await reqCourseCate();
@@ -174,8 +141,8 @@ export default {
   },
   //发异步请求获取优惠券列表
   async getCoupons({commit, state}) {
-    const {user} = state;
-    const result = await reqCoupons(user.member_id);
+    const {member_id} = state;
+    const result = await reqCoupons(member_id);
     if (result.code === 200) {
       const coupons = result.data;
       //commit给mutation
@@ -184,8 +151,8 @@ export default {
   },
   //异步获取我的课程
   async getMyCourse({commit, state, cb}) {
-    const {user} = state;
-    const result = await reqMyCourse(user.member_id);
+    const {member_id} = state;
+    const result = await reqMyCourse(member_id);
     if (result.code === 200) {
       const myCourse = result.data;
       //commit给mutation
@@ -196,8 +163,8 @@ export default {
   },
   //异步获取我的消费明细
   async getMyExpense({commit, state, cb}) {
-    const {user} = state;
-    const result = await reqExpense(user.member_id);
+    const {member_id} = state;
+    const result = await reqExpense(member_id);
     if (result.code === 200) {
       const myExpense = result.data;
       //commit给mutation
@@ -208,8 +175,8 @@ export default {
   },
   //异步获取我的优惠券
   async getMyCoupons({commit, state, cb}) {
-    const {user} = state;
-    const result = await reqMyCoupons(user.member_id);
+    const {member_id} = state;
+    const result = await reqMyCoupons(member_id);
     if (result.code === 200) {
       const myCoupons = result.data;
       //commit给mutation
@@ -220,8 +187,8 @@ export default {
   },
   //异步获取我的通知
   async getMyInform({commit, state, cb}) {
-    const {user} = state;
-    const result = await reqInform(user.member_id);
+    const {member_id} = state;
+    const result = await reqInform(member_id);
     if (result.code === 200) {
       const myInform = result.data;
       //commit给mutation

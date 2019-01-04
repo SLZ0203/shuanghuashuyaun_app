@@ -7,7 +7,7 @@
     <section class="scroll_wrap">
       <ul class="news_list">
         <li class="news_item" v-for="(n,index) in news" :key="index"
-            @click="$router.push('news_detail')">
+            @click="goToDetail(n.news_id)">
           <img v-lazy="'http://shedu.581vv.com'+n.news_pic">
           <div class="inner_wrap">
             <p class="pro_name">{{n.news_title}}</p>
@@ -46,7 +46,15 @@
     },
     computed: {
       ...mapState(['news'])
-    }
+    },
+    methods: {
+      goToDetail(id) {
+        this.$router.push({
+          path: '/news_detail',
+          query: {id}
+        })
+      }
+    },
   }
 </script>
 

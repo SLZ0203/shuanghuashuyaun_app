@@ -9,8 +9,8 @@
       <li class="info_item avatar">
         <div class="info_one">我的头像</div>
         <div class="info_right">
-          <img v-lazy="avatar" class="header_img" v-if="avatar">
-          <img src="../../../../static/images/36@2x.png" class="header_img" v-else>
+          <!--<img v-lazy="avatar" class="header_img" v-if="avatar">-->
+          <img src="../../../../static/images/36@2x.png" class="header_img">
           <input type="file" accept="image/*" class="upload" @change="handleFile">
           <img src="../../../../static/images/5@2x.png" class="more">
         </div>
@@ -257,12 +257,14 @@
         } else {
           const result = await reqPersonalEdit(
             this.user.member_id,
+            this.name,
             this.sexId,
             this.birthday,
             this.address,
             this.industry,
             this.phone,
             this.wechat,
+            this.avatar
           );
           if (result.code === 200) {
             Toast(result.msg);

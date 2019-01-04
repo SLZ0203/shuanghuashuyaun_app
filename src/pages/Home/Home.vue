@@ -37,7 +37,7 @@
             </span>
           </li>
           <li class="project_item" v-for="(pro,index) in hotCourse" :key="index"
-              @click="$router.push('/project_detail')">
+              @click="goToDetail('/project_detail',pro.course_id)">
             <img v-lazy="'http://shedu.581vv.com'+pro.course_thumb">
             <div>
               <p class="pro_name">{{pro.course_name}}</p>
@@ -59,7 +59,8 @@
               <img src="../../../static/images/5@2x.png" class="more_img">
             </span>
           </li>
-          <li class="news_item" v-for="(news,index) in hotNews" :key="index" @click="$router.push('/news_detail')">
+          <li class="news_item" v-for="(news,index) in hotNews" :key="index"
+              @click="goToDetail('/news_detail',news.news_id)">
             <img v-lazy="'http://shedu.581vv.com'+news.news_pic">
             <div class="inner_wrap">
               <p class="pro_name">{{news.news_title}}</p>
@@ -82,6 +83,7 @@
   import Swiper from 'swiper'
   import BScroll from 'better-scroll'
   import {mapState} from 'vuex'
+  import {Indicator, Toast} from 'mint-ui';
 
   export default {
     name: "Home",
@@ -92,11 +94,14 @@
     },
     mounted() {
       //异步获取轮播图
+      Indicator.open();
       this.$store.dispatch('getBanner');
       //异步获取热门课程
       this.$store.dispatch('getHotcourse');
       //异步获取热门新闻
-      this.$store.dispatch('getHotNews');
+      this.$store.dispatch('getHotNews', () => {
+        Indicator.close()
+      });
     },
     activated() {
       this._initScroll();
@@ -125,6 +130,9 @@
           }
         })
       },
+      goToDetail(path, id) {
+        this.$router.push({path, query: {id}})
+      }
     },
     computed: {
       ...mapState(['banner', 'hotNews', 'hotCourse'])

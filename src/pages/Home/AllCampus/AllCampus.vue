@@ -7,7 +7,7 @@
     <section class="scroll_wrap">
       <ul class="project_list">
         <li class="project_item" v-for="(school,index) in schools" :key="index"
-            @click="$router.push('/campus_detail')">
+            @click="goToDetail(school.school_id)">
           <img v-lazy="'http://shedu.581vv.com'+school.school_thumb">
           <div>
             <p class="pro_name">{{school.school_name}}</p>
@@ -40,6 +40,14 @@
           })
         })
       });
+    },
+    methods: {
+      goToDetail(id) {
+        this.$router.push({
+          path: '/campus_detail',
+          query: {id}
+        })
+      }
     },
     computed: {
       ...mapState(['schools'])

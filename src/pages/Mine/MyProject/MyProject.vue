@@ -43,7 +43,7 @@
           </ul>
         </div>
         <!--我的上课状态页面，点击查看详情显示-->
-       <!-- <div class="class_state" v-show="!isShow">
+        <div class="class_state" v-show="!isShow">
           <div class="state_info">
             <div class="info_inner">
               <div class="class_name">
@@ -61,9 +61,9 @@
               <span>爱贝汉语早教课程</span>
             </li>
           </ul>
-        </div>-->
+        </div>
+        <div class="noPro" v-if="myCourse.length===0">您暂时没有课程安排</div>
       </div>
-      <div class="noPro" v-if="myCourse.length===0">您暂时没有课程安排</div>
     </section>
   </section>
 </template>

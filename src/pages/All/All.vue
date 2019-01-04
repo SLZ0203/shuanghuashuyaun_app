@@ -11,12 +11,12 @@
       <div>
         <ul class="project_list">
           <li class="project_item" v-for="(pro,index) in courseArr" :key="index"
-              @click="$router.push('/project_detail')">
+              @click="goToDetail(pro.course_id)">
             <img v-lazy="'http://shedu.581vv.com'+pro.course_thumb">
             <div>
               <p class="pro_name">{{pro.course_name}}</p>
-              <span class="pro_year ellipsis">{{pro.course_tags}}</span>
-              <span class="pro_feat ellipsis">{{pro.course_introduction}}</span>
+              <span class="pro_year ellipsis">{{pro.course_school_time}}</span>
+              <span class="pro_feat ellipsis">{{pro.course_keywords}}</span>
               <p class="pro_price">
                 <span>{{pro.course_price_yen}}日元</span>
                 <span>/</span>
@@ -44,6 +44,7 @@
   import Shade from '../../components/Shade/Shade'
   import {mapState} from 'vuex'
   import {reqSortCourse, reqCateCourse} from '../../api'
+  import {Indicator, Toast} from 'mint-ui';
 
   export default {
     name: "All",
@@ -58,13 +59,15 @@
       }
     },
     mounted() {
+      Indicator.open();
+      //获取课程分类
+      this.$store.dispatch('getCourseCate');
       //获取课程
       this.$store.dispatch('getCourse', () => {
         this.courseArr = this.course;
         this._initScroll();
+        Indicator.close()
       });
-      //获取课程分类
-      this.$store.dispatch('getCourseCate')
     },
     methods: {
       //tab切换及排序
@@ -81,22 +84,35 @@
           } else {
             sort = 2
           }
+          Indicator.open();
           const result = await reqSortCourse(sortType, sort);
           if (result.code === 200) {
             this.courseArr = result.data;
+            this._initScroll();
+            Indicator.close()
           }
         }
       },
       //课程分类
       async cateCourse(index, cateId) {
         this.active = index;
+        Indicator.open();
         if (index === -1) {
-          this.$store.dispatch('getCourse');
+          this.$store.dispatch('getCourse', () => {
+            this._initScroll();
+            Indicator.close()
+          });
           this.courseArr = this.course
         } else {
+          Indicator.open();
           const result = await reqCateCourse(cateId);
           if (result.code === 200) {
-            this.courseArr = result.data
+            this.courseArr = result.data;
+            this._initScroll();
+            Indicator.close()
+          } else{
+            Toast(result.msg);
+            Indicator.close()
           }
         }
         this.isShow = false
@@ -113,6 +129,13 @@
           }
         })
       },
+      //课程详情页面
+      goToDetail(id) {
+        this.$router.push({
+          path: '/project_detail',
+          query: {id}
+        })
+      }
     },
     computed: {
       ...mapState(['course', 'courseCate'])

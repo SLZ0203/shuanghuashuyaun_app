@@ -2,17 +2,15 @@
 包含n个用于直接更新状态数据方法的对象
  */
 import {
+  RECEIVE_MEMBER_ID,
   RECEIVE_USER,
   RESET_USER,
   RECEIVE_BANNER,
   RECEIVE_SCHOOLS,
-  RECEIVE_SCHOOLDETAIL,
   RECEIVE_NEWS,
-  RECEIVE_NEWSDETAIL,
   RECEIVE_HOTCOURSE,
   RECEIVE_HOTNEWS,
   RECEIVE_COURSE,
-  RECEIVE_COURSEDETAIL,
   RECEIVE_COURSECATE,
   RECEIVE_COUPONS,
   RECEIVE_MYCOURSE,
@@ -23,10 +21,14 @@ import {
 } from './mutation-types';
 
 export default {
+  [RECEIVE_MEMBER_ID](state, {member_id}) {
+    state.member_id = member_id
+  },
   [RECEIVE_USER](state, {user}) {
     state.user = user
   },
   [RESET_USER](state) {
+    state.member_id = '';
     state.user = {}
   },
   [RECEIVE_BANNER](state, {banner}) {
@@ -35,14 +37,8 @@ export default {
   [RECEIVE_SCHOOLS](state, {schools}) {
     state.schools = schools
   },
-  [RECEIVE_SCHOOLDETAIL](state, {schoolDetail}) {
-    state.schoolDetail = schoolDetail
-  },
   [RECEIVE_NEWS](state, {news}) {
     state.news = news
-  },
-  [RECEIVE_NEWSDETAIL](state, {newsDetail}) {
-    state.newsDetail = newsDetail
   },
   [RECEIVE_HOTCOURSE](state, {hotCourse}) {
     state.hotCourse = hotCourse
@@ -52,9 +48,6 @@ export default {
   },
   [RECEIVE_COURSE](state, {course}) {
     state.course = course
-  },
-  [RECEIVE_COURSEDETAIL](state, {courseDetail}) {
-    state.courseDetail = courseDetail
   },
   [RECEIVE_COURSECATE](state, {courseCate}) {
     state.courseCate = courseCate

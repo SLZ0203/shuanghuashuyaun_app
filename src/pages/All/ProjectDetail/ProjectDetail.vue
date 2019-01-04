@@ -6,52 +6,60 @@
     </HeaderTop>
     <section class="scroll_wrap">
       <div class="scroll_inner">
-        <img v-lazy="'http://shedu.581vv.com'+courseDetail.course_thumb" class="banner">
+        <img v-lazy="'http://shedu.581vv.com'+detail.course_thumb" class="banner">
         <div class="pro_info">
           <p class="pro_name">
-            <span>{{courseDetail.course_name}}</span>
-            <span class="class_time">{{courseDetail.course_class_hour}}课时</span>
+            <span>{{detail.course_name}}</span>
+            <span class="class_time">{{detail.course_class_hour}}课时</span>
           </p>
-          <span class="pro_year">{{courseDetail.course_tags}}</span>
+          <span class="pro_year">{{detail.course_tags}}</span>
           <span class="pro_feat">特色课程</span>
           <p class="pro_price">
-            {{courseDetail.course_price_yen}}日元/{{courseDetail.course_price_rmb}}人民币
+            {{detail.course_price_yen}}日元/{{detail.course_price_rmb}}人民币
           </p>
         </div>
         <div class="class_intro">
           <span class="title">课程简介</span>
           <p class="text">
-            {{courseDetail.course_introduction}}
+            {{detail.course_introduction}}
           </p>
-          <img v-lazy="'http://shedu.581vv.com'+courseDetail.course_thumb">
+          <img v-lazy="'http://shedu.581vv.com'+detail.course_thumb">
           <p class="text">
-            {{courseDetail.course_introduction}}
+            {{detail.course_introduction}}
           </p>
         </div>
       </div>
     </section>
-    <div class="go_buy" @click="toPay(user.member_id,courseDetail.course_id)">立即购买</div>
+    <div class="go_buy" @click="toPay(user.member_id,detail.course_id)">立即购买</div>
   </section>
 </template>
 
 <script>
   import BScroll from 'better-scroll'
   import {mapState} from 'vuex'
-  import {reqCreateOrder} from '../../../api'
+  import {reqCourseDetail, reqCreateOrder} from '../../../api'
+  import {Indicator, Toast} from 'mint-ui';
 
   export default {
     name: "ProjectDetail",
     data() {
       return {
-        title: '课程详情'
+        title: '课程详情',
+        course_id: this.$route.query.id,
+        detail: {}
       }
     },
-    mounted() {
-      this.$store.dispatch('getCourseDetail', () => {
-        this.$nextTick(() => {
-          this._initScroll()
-        })
-      })
+    async mounted() {
+      //获取课程详情
+      Indicator.open();
+      const result = await reqCourseDetail(this.course_id);
+      if (result.code === 200) {
+        this.detail = result.data;
+        this._initScroll();
+        Indicator.close()
+      } else {
+        Toast(result.msg)
+      }
     },
     methods: {
       _initScroll() {
@@ -65,20 +73,17 @@
       },
       async toPay(mid, cid) {
         const result = await reqCreateOrder(mid, cid);
+        console.log(result);
         this.$router.push({
           path: '/class_payment',
           query: {
-            course_id: this.courseDetail.course_id,
-            course_name: this.courseDetail.course_name,
-            class_hour: this.courseDetail.course_class_hour,
-            course_price_yen: this.courseDetail.course_price_yen,
-            course_price_rmb: this.courseDetail.course_price_rmb
+            detail: this.detail
           }
         })
       }
     },
     computed: {
-      ...mapState(['user', 'courseDetail'])
+      ...mapState(['user'])
     }
   }
 </script>

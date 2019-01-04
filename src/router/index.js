@@ -130,7 +130,7 @@ const router = new VueRouter({
       component: Classpayment,
       meta: {
         showFooter: false,
-        keepAlive: true
+        keepAlive: false
       }
     },
     {
@@ -170,7 +170,7 @@ const router = new VueRouter({
       component: Mine,
       meta: {
         showFooter: true,
-        keepAlive: true
+        keepAlive: false
       }
     },
     {
@@ -264,18 +264,20 @@ const router = new VueRouter({
   ]
 });
 
+import {Toast} from 'mint-ui'
 // 所有需要检查是否登陆的path的数组
-const paths = ['/class_payment'];
+const paths = ['/class_payment','/mydata'];
 router.beforeEach((to, from, next) => {
   const path = to.path;
   // 判断是否在需要检查的paths中
   // 如果在，判断是否已经登陆
   if (paths.indexOf(path) >= 0) {
-    if (localStorage.getItem('email')) {
+    if (localStorage.getItem('member_id')) {
       //如果已登陆,放行
       next()
     } else {
       //如果未登录,跳转到登陆
+      Toast('请登录');
       next('/login')
     }
   } else {
