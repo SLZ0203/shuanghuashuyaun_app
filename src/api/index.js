@@ -71,12 +71,11 @@ export const reqResetPassword = (member_id, password, new_password) => ajax(base
 //获取用户信息
 export const reqMember = member_id => ajax(baseUrl + '/api/member', {member_id}, 'POST');
 //修改个人资料
-export const reqPersonalEdit = (member_id, member_realname, member_sex, member_birthday,
+export const reqPersonalEdit = (member_id, member_sex, member_birthday,
                                 member_detail_addr, member_industry, member_phone,
                                 member_wechat_no, member_headpic) => ajax(baseUrl + '/api/personal_edit',
   {
     member_id,
-    member_realname,
     member_sex,
     member_birthday,
     member_detail_addr,

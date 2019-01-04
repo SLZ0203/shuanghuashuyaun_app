@@ -90,7 +90,7 @@
             that.$store.dispatch('saveUser', user);
             //缓存用户名
             localStorage.setItem('email', user.member_email);
-            if (user.member_sex >= 0 && user.member_birthday && user.member_detail_addr && user.member_industry && user.member_phone) {
+            if (user.member_realname && user.member_sex >= 0 && user.member_birthday && user.member_detail_addr && user.member_industry && user.member_phone) {
               Toast(result.msg);
               //跳转到首页
               that.$router.replace('/home')
