@@ -58,6 +58,7 @@
   import {mapState} from 'vuex'
   import {Toast} from 'mint-ui'
   import {wxPay, aliPay} from '../../../api'
+  import wx from 'weixin-js-sdk'
 
   export default {
     name: "Classpayment",
@@ -67,6 +68,7 @@
         num: "",
         isChecked: false,//会员合同选择
         detail: this.$route.query.detail,
+        wxJson: {}
       }
     },
     methods: {
@@ -88,8 +90,12 @@
           Toast('请您选择支付方式！')
         } else {
           if (this.num === 0) { //微信支付
-            result = await wxPay(this.detail.course_id, this.useCoupons.id);
+            result = await wxPay();//this.detail.course_id, this.useCoupons.id
             console.log(result);
+            if (result.code === 200) {
+              this.wxJson = result.data;
+              this.wx_pay()
+            }
             //this.$router.push('pay_win')
           } else {//支付宝支付
             result = await aliPay(this.detail.course_id, this.useCoupons.id);
@@ -97,6 +103,26 @@
             //this.$router.push('pay_win')
           }
         }
+      },
+      //微信支付逻辑
+      wx_pay() {
+        wx.config({
+          debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          appId: this.wxJson.appid,
+          timestamp: this.wxJson.mch_id,
+          nonceStr: this.wxJson.nonce_str, // 必填，生成签名的随机串
+          signature: this.wxJson.sign,
+          jsApiList: [
+            'chooseWXPay'
+          ] // 必填，需要使用的JS接口列表
+        });
+        wx.ready(() => {
+          wx.chooseWXPay({
+            appId: this.wxJson.appid,
+            nonceStr: this.wxJson.nonce_str, // 必填，生成签名的随机串
+            timestamp: this.wxJson.mch_id,
+          })
+        })
       }
     },
     computed: {
