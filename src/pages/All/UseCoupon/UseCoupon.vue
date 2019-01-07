@@ -42,11 +42,13 @@
         thatNum: '',
         couponList: [
           {
+            coupon_id: '1',
             coupon_quota_rmb: '50',
             coupon_condition_rmb: '500',
             coupon_name: '购买课程抵扣券',
           },
           {
+            coupon_id: '2',
             coupon_quota_rmb: '100',
             coupon_condition_rmb: '1000',
             coupon_name: '购买课程抵扣券',
@@ -64,13 +66,13 @@
       checkCoupon(cou, index) {
         this.thatNum = index;
         this.isChecked = false;
-        this.$router.replace({
-          path: '/class_payment',
-          query: {
-            full: cou.coupon_condition_rmb,
-            sub: cou.coupon_quota_rmb
-          }
-        })
+        const useCoupons = {
+          full: cou.coupon_condition_rmb,
+          sub: cou.coupon_quota_rmb,
+          id: cou.coupon_id
+        };
+        this.$store.dispatch('saveUseCoupon', useCoupons);
+        this.$router.back()
       }
     },
     mounted() {

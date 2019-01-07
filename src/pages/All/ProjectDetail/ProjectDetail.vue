@@ -30,7 +30,7 @@
         </div>
       </div>
     </section>
-    <div class="go_buy" @click="toPay(user.member_id,detail.course_id)">立即购买</div>
+    <div class="go_buy" @click="toPay(member_id,detail.course_id)">立即购买</div>
   </section>
 </template>
 
@@ -73,17 +73,20 @@
       },
       async toPay(mid, cid) {
         const result = await reqCreateOrder(mid, cid);
-        console.log(result);
-        this.$router.push({
-          path: '/class_payment',
-          query: {
-            detail: this.detail
-          }
-        })
+        if (result.code === 200) {
+          this.$router.push({
+            path: '/class_payment',
+            query: {
+              detail: this.detail
+            }
+          })
+        } else {
+          Toast(result.msg)
+        }
       }
     },
     computed: {
-      ...mapState(['user'])
+      ...mapState(['member_id'])
     }
   }
 </script>

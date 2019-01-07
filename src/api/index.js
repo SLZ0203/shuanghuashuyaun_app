@@ -58,6 +58,10 @@ export const reqCreateOrder = (member_id, course_id) => ajax(baseUrl + '/api/cre
 }, 'POST');
 //优惠券
 export const reqCoupons = member_id => ajax(baseUrl + '/api/coupons', {member_id});
+//微信支付
+export const wxPay = (order_id, member_coupon_id) => ajax(baseUrl + '/api/wxpay',{order_id, member_coupon_id});
+//支付宝支付
+export const aliPay = (order_id, member_coupon_id) => ajax(baseUrl + '/api/alipay',{order_id, member_coupon_id});
 
 /*个人中心*/
 //异步上传图片

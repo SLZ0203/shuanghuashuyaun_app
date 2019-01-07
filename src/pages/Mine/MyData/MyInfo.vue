@@ -8,10 +8,18 @@
     <ul class="user_info_list">
       <li class="info_item avatar">
         <div class="info_one">我的头像</div>
+        <div class="v-simple-cropper">
+          <div class="v_cropper_layer" ref="layer">
+            <div class="layer_header">
+              <div class="cancel" @click="cancelHandle">取消</div>
+              <div class="confirm" @click="confirmHandle">确定</div>
+            </div>
+            <img ref="cropperImg"/>
+          </div>
+        </div>
         <div class="info_right">
-          <!--<img v-lazy="avatar" class="header_img" v-if="avatar">-->
-          <img src="../../../../static/images/36@2x.png" class="header_img">
-          <input type="file" accept="image/*" class="upload" @change="handleFile">
+          <img :src="avatar" class="header_img">
+          <input type="file" ref="file" accept="image/*" class="upload" @change="handleFile">
           <img src="../../../../static/images/5@2x.png" class="more">
         </div>
       </li>
@@ -113,11 +121,13 @@
 
 <script>
   import {mapState} from 'vuex'
+  import Cropper from 'cropperjs'
   import {reqMember, reqPersonalEdit} from '../../../api'
   import Shade from '../../../components/Shade/Shade'
   import BScroll from 'better-scroll'
   import {Indicator, Toast} from 'mint-ui';
   import ChooseAddress from '../../../components/ChooseAddress/ChooseAddress'
+  import '../../../../static/css/cropper.min.css'
 
   export default {
     name: "MyInfo",
@@ -166,25 +176,57 @@
         Indicator.close();
         Toast(result.msg)
       }
+      this._initCropper()
     },
     methods: {
-      //将头像显示
+      //初始化裁剪框
+      _initCropper() {
+        const cropperImg = this.$refs.cropperImg;
+        this.cropper = new Cropper(cropperImg, {
+          aspectRatio: 1 / 1,
+          dragMode: 'move',
+          viewMode: 1,
+          guides: false,
+          cropBoxMovable: false,
+          minCropBoxWidth: 350,
+          minCropBoxHeight: 350,
+          cropBoxResizable: false
+        });
+      },
+      //用户选择头像
       handleFile(e) {
-        //表示调用他的各种属性，
-        let $target = e.target || e.srcElement;
-        //由于手机上可以选择多张图片，所以取第一张图。
-        let file = $target.files[0];
-        console.log(file);
-        //FileReader 对象允许Web应用程序异步读取存储在用户计算机上的文件（或原始数据缓冲区）的内容，
-        // 使用 File 或 Blob 对象指定要读取的文件或数据。
-        var reader = new FileReader();
-        //.onload 事件会在页面或图像加载完成后立即发生
-        reader.onload = (data) => {
-          let res = data.target || data.srcElement;
-          this.avatar = res.result
-        };
-        //将读取到的文件编码成Data URL
-        reader.readAsDataURL(file);
+        let file = e.target.files[0];
+        let URL = window.URL || window.webkitURL;
+        this.$refs['layer'].style.display = 'block';
+        this.cropper.replace(URL.createObjectURL(file))
+      },
+      //取消裁剪
+      cancelHandle() {
+        this.cropper.reset();
+        this.$refs['layer'].style.display = 'none';
+        this.$refs['file'].value = '';
+      },
+      //确定裁剪
+      confirmHandle() {//确定裁剪
+        let croppedCanvas = this.cropper.getCroppedCanvas();
+        let roundedCanvas = this.getRoundedCanvas(croppedCanvas);
+        this.avatar = roundedCanvas.toDataURL();
+        this.$refs['layer'].style.display = 'none';
+      },
+      getRoundedCanvas(sourceCanvas) {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        const width = sourceCanvas.width;
+        const height = sourceCanvas.height;
+        canvas.width = width;
+        canvas.height = height;
+        context.imageSmoothingEnabled = true;
+        context.drawImage(sourceCanvas, 0, 0, width, height);
+        context.globalCompositeOperation = 'destination-in';
+        context.beginPath();
+        context.arc(width / 2, height / 2, Math.min(width, height) / 2, 0, 2 * Math.PI, true);
+        context.fill();
+        return canvas;
       },
       //选择性别、工作
       choose(item, index) {
@@ -336,44 +378,74 @@
             left 0
             top 0
             opacity 0
-    .choose_sex, .choose_work
+        .v-simple-cropper
+          .v_cropper_layer
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            z-index: 9999;
+            display: none;
+            .layer_header
+              position: absolute;
+              top: 0;
+              left: 0;
+              z-index: 1;
+              background: #fff;
+              width: 100%;
+              height: 100px;
+              display flex
+              .cancel, .confirm
+                width 50%
+                line-height 100px
+                text-align: center
+                font-size 32px
+            img
+              position: inherit !important;
+              border-radius: inherit !important;
+              float: inherit !important;
+
+  .choose_sex, .choose_work
+    width 100%
+    position fixed
+    z-index 100
+    bottom 0
+    background #fff
+    .choose_hd
       width 100%
+      height 75px
+      display flex
+      padding 0 40px
+      box-sizing border-box
+      align-items center
+      justify-content space-between
+      font-size 28px
+      bottom-border-1px(#ccc)
+      .one
+        color red
+      .two
+        color $main
+    .scroll_wrap
+      width 100%
+      overflow hidden
       position fixed
-      z-index 100
       bottom 0
-      background #fff
-      .choose_hd
+      .choose_list
         width 100%
-        height 75px
-        display flex
-        padding 0 40px
-        box-sizing border-box
-        align-items center
-        justify-content space-between
-        font-size 28px
-        bottom-border-1px(#ccc)
-        .one
-          color red
-        .two
-          color $main
-      .scroll_wrap
-        width 100%
-        overflow hidden
-        position fixed
-        bottom 0
-        .choose_list
+        .choose_item
           width 100%
-          .choose_item
-            width 100%
-            height 100px
-            line-height 100px
-            text-align: center
-            font-size 30px
-            &.check
-              background #eee
-    .choose_work
-      height 50%
-      .scroll_wrap
-        top 742px
+          height 100px
+          line-height 100px
+          text-align: center
+          font-size 30px
+          &.check
+            background #eee
+
+  .choose_work
+    height 50%
+    .scroll_wrap
+      top 742px
 </style>
 

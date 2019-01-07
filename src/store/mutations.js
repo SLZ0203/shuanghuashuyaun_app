@@ -5,6 +5,8 @@ import {
   RECEIVE_MEMBER_ID,
   RECEIVE_USER,
   RESET_USER,
+  RECEIVE_USECOUPONS,
+  RECEIVE_AGREEN,
   RECEIVE_BANNER,
   RECEIVE_SCHOOLS,
   RECEIVE_NEWS,
@@ -30,6 +32,12 @@ export default {
   [RESET_USER](state) {
     state.member_id = '';
     state.user = {}
+  },
+  [RECEIVE_USECOUPONS](state, {useCoupons}) {
+    state.useCoupons = useCoupons;
+  },
+  [RECEIVE_AGREEN](state, {agreen}) {
+    state.agreen = agreen;
   },
   [RECEIVE_BANNER](state, {banner}) {
     state.banner = banner

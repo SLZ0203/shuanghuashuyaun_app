@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "better-scroll": "^1.13.2",
+    "cropperjs": "^1.4.3",
     "lib-flexible": "^0.3.2",
     "mint-ui": "^2.2.13",
     "swiper": "^4.4.2",

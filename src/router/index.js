@@ -35,7 +35,7 @@ const router = new VueRouter({
   routes: [
     {
       path: '/',
-      redirect: '/login'
+      redirect: '/home'
     },
     {
       path: '/login',
@@ -130,7 +130,7 @@ const router = new VueRouter({
       component: Classpayment,
       meta: {
         showFooter: false,
-        keepAlive: false
+        keepAlive: true
       }
     },
     {
@@ -266,7 +266,7 @@ const router = new VueRouter({
 
 import {Toast} from 'mint-ui'
 // 所有需要检查是否登陆的path的数组
-const paths = ['/class_payment','/mydata'];
+const paths = ['/class_payment', '/mydata'];
 router.beforeEach((to, from, next) => {
   const path = to.path;
   // 判断是否在需要检查的paths中

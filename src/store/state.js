@@ -13,6 +13,8 @@ export default {
   course: [],//课程列表
   courseCate: [], //课程分类
   coupons: [],//优惠券列表
+  useCoupons: {}, //用户使用的优惠券
+  agreen: false, // 用户是否同意合同
   myCourse: [], //我的课程列表
   myExpense: [], //我的消费记录
   myCoupons: [], //我的优惠券列表

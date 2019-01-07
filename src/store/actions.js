@@ -21,6 +21,8 @@ import {
   RECEIVE_MEMBER_ID,
   RECEIVE_USER,
   RESET_USER,
+  RECEIVE_USECOUPONS,
+  RECEIVE_AGREEN,
   RECEIVE_BANNER,
   RECEIVE_SCHOOLS,
   RECEIVE_NEWS,
@@ -49,6 +51,14 @@ export default {
     commit(RESET_USER);
     // 在更新状态后立即调用
     typeof cb === 'function' && cb()
+  },
+  //保存选择的优惠券
+  saveUseCoupon({commit}, useCoupons) {
+    commit(RECEIVE_USECOUPONS, {useCoupons})
+  },
+  //用户石佛同意会员合同
+  userAgreen({commit}, agreen) {
+    commit(RECEIVE_AGREEN, {agreen})
   },
   //发异步请求获取首页轮播图
   async getBanner({commit}, cb) {
@@ -109,17 +119,6 @@ export default {
   //发异步请求获取课程列表
   async getCourse({commit}, cb) {
     const result = await reqCourse();
-    if (result.code === 200) {
-      const course = result.data;
-      //commit给mutation
-      commit(RECEIVE_COURSE, {course});
-      // 在更新状态后立即调用
-      typeof cb === 'function' && cb()
-    }
-  },
-  //发异步请求获取课程列表
-  async getSortCourse({commit}, cb) {
-    const result = await reqSortCourse();
     if (result.code === 200) {
       const course = result.data;
       //commit给mutation

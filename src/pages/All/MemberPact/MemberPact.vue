@@ -45,7 +45,7 @@
         </p>
       </div>
     </div>
-    <div class="agree_btn">同意会员合同</div>
+    <div class="agree_btn" @click="areen">同意会员合同</div>
   </section>
 </template>
 
@@ -60,11 +60,24 @@
       }
     },
     mounted() {
-      this.$nextTick(() => {
-        new BScroll('.scroll_wrap', {
-          click: true
+      this._initScroll()
+    },
+    methods: {
+      _initScroll() {
+        this.$nextTick(() => {
+          if (!this.scroll) {
+            new BScroll('.scroll_wrap', {
+              click: true
+            })
+          } else {
+            this.scroll.refresh()
+          }
         })
-      })
+      },
+      areen() {
+        this.$store.dispatch('userAgreen', true);
+        this.$router.replace('/class_payment');
+      },
     }
   }
 </script>

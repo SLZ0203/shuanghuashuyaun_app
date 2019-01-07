@@ -16,7 +16,8 @@
       <li class="cou_item" @click="useCoupon()">
         <div class="name">优惠券</div>
         <div class="content">
-          <span>无优惠券</span>
+          <span v-if="useCoupons.full" class="full_sub">满{{useCoupons.full}}减{{useCoupons.sub}}</span>
+          <span v-else>无优惠券</span>
           <img src="../../../../static/images/26@2x.png" class="more_img">
         </div>
       </li>
@@ -43,7 +44,7 @@
       </li>
     </ul>
     <div class="agree" @click="$router.push('member_pact')">
-      <span class="check" :class="{checked:isChecked}" @click.stop="isChecked=!isChecked"></span>
+      <span class="check" :class="{checked:agreen}" @click.stop="isAgreen"></span>
       <span>同意《会员合同》</span>
     </div>
     <div class="pay_btn">
@@ -54,6 +55,9 @@
 </template>
 
 <script>
+  import {mapState} from 'vuex'
+  import {Toast} from 'mint-ui'
+  import {wxPay, aliPay} from '../../../api'
 
   export default {
     name: "Classpayment",
@@ -62,7 +66,7 @@
         title: '课程付款',
         num: "",
         isChecked: false,//会员合同选择
-        detail: this.$route.query.detail
+        detail: this.$route.query.detail,
       }
     },
     methods: {
@@ -71,17 +75,37 @@
         this.$store.dispatch('getCoupons');
         this.$router.push('/use_coupon')
       },
-      //点击支付按钮
-      goBuy() {
-        /*
-        * 同时满足两个条件后可以跳转
-        * 1.选择了支付方式
-        * 2.同意了客户合同
-        * */
-        if (this.isChecked === true && this.num !== '') {
-          this.$router.push('pay_win')
-        }
+      isAgreen() {
+        this.isChecked = !this.isChecked;
+        this.$store.dispatch('userAgreen', this.isChecked)
       },
+      //点击支付按钮
+      async goBuy() {
+        let result;
+        if (!this.agreen) {
+          Toast('请您同意会员合同！')
+        } else if (this.num === '') {
+          Toast('请您选择支付方式！')
+        } else {
+          if (this.num === 0) { //微信支付
+            result = await wxPay(this.detail.course_id, this.useCoupons.id);
+            console.log(result);
+            //this.$router.push('pay_win')
+          } else {//支付宝支付
+            result = await aliPay(this.detail.course_id, this.useCoupons.id);
+            console.log(result);
+            //this.$router.push('pay_win')
+          }
+        }
+      }
+    },
+    computed: {
+      ...mapState(['useCoupons', 'agreen'])
+    },
+    watch: {
+      agreen(value) {
+        console.log(value);
+      }
     }
   }
 </script>
@@ -129,6 +153,8 @@
         font-size 30px
         .content
           color #999
+          .full_sub
+            color #FE5F35
           .more_img
             width 13px
             height 25px
