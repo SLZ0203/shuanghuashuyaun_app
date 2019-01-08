@@ -12,8 +12,6 @@ import {
   RECEIVE_NEWS,
   RECEIVE_HOTCOURSE,
   RECEIVE_HOTNEWS,
-  RECEIVE_COURSE,
-  RECEIVE_COURSECATE,
   RECEIVE_COUPONS,
   RECEIVE_MYCOURSE,
   RECEIVE_MYEXPENSE,
@@ -53,12 +51,6 @@ export default {
   },
   [RECEIVE_HOTNEWS](state, {hotNews}) {
     state.hotNews = hotNews
-  },
-  [RECEIVE_COURSE](state, {course}) {
-    state.course = course
-  },
-  [RECEIVE_COURSECATE](state, {courseCate}) {
-    state.courseCate = courseCate
   },
   [RECEIVE_COUPONS](state, {coupons}) {
     state.coupons = coupons

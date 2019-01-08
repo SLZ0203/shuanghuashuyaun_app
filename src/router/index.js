@@ -22,6 +22,7 @@ import MyInfo from '../pages/Mine/MyData/MyInfo'//我的资料2页面
 import KidsInfo from '../pages/Mine/MyData/KidsInfo'//孩子资料页面
 import ChangePwd from '../pages/Mine/MyData/ChangePwd'//修改密码页面
 import MyProject from '../pages/Mine/MyProject/MyProject'//我的课程页面
+import MyClassState from '../pages/Mine/MyProject/MyClassState/MyClassState'//我的上课状态
 import MyConsume from '../pages/Mine/MyConsume/MyConsume'//我的消费明细页面
 import GoodFriend from '../pages/Mine/GoodFriend/GoodFriend'//好友推荐页面
 import Coupon from '../pages/Mine/Coupon/Coupon'//优惠券页面
@@ -214,6 +215,14 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/myclassstate',
+      component: MyClassState,
+      meta: {
+        showFooter: false,
+        keepAlive: false
+      }
+    },
+    {
       path: '/myconsume',
       component: MyConsume,
       meta: {
@@ -266,7 +275,7 @@ const router = new VueRouter({
 
 import {Toast} from 'mint-ui'
 // 所有需要检查是否登陆的path的数组
-const paths = ['/class_payment', '/mydata'];
+const paths = ['/mydata', '/myproject', '/myconsume', '/coupon', '/message', '/leaveword'];
 router.beforeEach((to, from, next) => {
   const path = to.path;
   // 判断是否在需要检查的paths中

@@ -1,13 +1,21 @@
 <!--阴影遮罩层-->
 <template>
   <transition name="fade">
-    <div class="shade"></div>
+    <div class="shade" @click="close"></div>
   </transition>
 </template>
 
 <script>
   export default {
+    props: {
+      isShow: Boolean
+    },
     name: "Shade",
+    methods: {
+      close() {
+        this.$emit('closeShade', false)
+      }
+    }
   }
 </script>
 
@@ -21,9 +29,11 @@
     top 0
     left 0
     z-index 10
+
   .fade-leave
     opacity: 1
+
   .fade-leave-active
     opacity 0
-    transition all 1s
+    transition all .6s
 </style>

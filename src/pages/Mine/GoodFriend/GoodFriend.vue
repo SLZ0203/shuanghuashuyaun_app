@@ -161,6 +161,8 @@
             border 1px solid #E6E6E6
             border-radius 30px
             margin-bottom 15px
+            img
+              width 65%
       .cancel
         width 100%
         height 110px

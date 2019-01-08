@@ -10,8 +10,6 @@ export default {
   news: [], //活动新闻
   hotCourse: [], //热门课程
   hotNews: [], //热门新闻
-  course: [],//课程列表
-  courseCate: [], //课程分类
   coupons: [],//优惠券列表
   useCoupons: {}, //用户使用的优惠券
   agreen: false, // 用户是否同意合同

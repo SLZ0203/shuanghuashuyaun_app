@@ -43,14 +43,14 @@ export const reqHotNews = () => ajax(baseUrl + '/api/hot_news');
 /*课程模块*/
 //课程列表
 export const reqCourse = () => ajax(baseUrl + '/api/course');
-//课程排序列表
-export const reqSortCourse = (sortType, sort) => ajax(baseUrl + '/api/course', {sortType, sort});
-//课程排序列表
-export const reqCateCourse = cateId => ajax(baseUrl + '/api/course', {cateId});
-//课程详情
-export const reqCourseDetail = course_id => ajax(baseUrl + '/api/detail', {course_id});
 //课程分类
 export const reqCourseCate = () => ajax(baseUrl + '/api/cate');
+//分类课程列表
+export const reqCateCourse = cateId => ajax(baseUrl + '/api/course', {cateId});
+//课程排序列表
+export const reqSortCourse = (cateId, sortType, sort) => ajax(baseUrl + '/api/course', {cateId, sortType, sort});
+//课程详情
+export const reqCourseDetail = course_id => ajax(baseUrl + '/api/detail', {course_id});
 //创建订单
 export const reqCreateOrder = (member_id, course_id) => ajax(baseUrl + '/api/createOrder', {
   member_id,
@@ -59,9 +59,12 @@ export const reqCreateOrder = (member_id, course_id) => ajax(baseUrl + '/api/cre
 //优惠券
 export const reqCoupons = member_id => ajax(baseUrl + '/api/coupons', {member_id});
 //微信支付
-export const wxPay = (order_id, member_coupon_id) => ajax(baseUrl + '/api/wxpay');
+export const wxPay = (order_id, member_coupon_id) => ajax(baseUrl + '/api/wxpay', {order_id, member_coupon_id}, 'POST');
 //支付宝支付
-export const aliPay = (order_id, member_coupon_id) => ajax(baseUrl + '/api/alipay',{order_id, member_coupon_id});
+export const aliPay = (order_id, member_coupon_id) => ajax(baseUrl + '/api/alipay', {
+  order_id,
+  member_coupon_id
+}, 'POST');
 
 /*个人中心*/
 //异步上传图片

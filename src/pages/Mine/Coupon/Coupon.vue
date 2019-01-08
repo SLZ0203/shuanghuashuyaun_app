@@ -23,7 +23,7 @@
               <p class="full_sub">满{{item.coupon_condition_rmb}}减{{item.coupon_quota_rmb}}</p>
             </div>
           </li>
-          <div class="noCoupons" v-show="myCoupons.not_used.length===0">对不起，您没有优惠券</div>
+          <div class="noCoupons" v-show="!myCoupons.not_used.length">对不起，您没有优惠券</div>
         </ul>
         <!--已使用优惠券-->
         <ul class="used_coupon_list" v-show="num===1">
@@ -39,7 +39,7 @@
               <p class="full_sub">满{{item.coupon_condition_rmb}}减{{item.coupon_quota_rmb}}</p>
             </div>
           </li>
-          <div class="noCoupons" v-show="myCoupons.used.length===0">对不起，您没有优惠券</div>
+          <div class="noCoupons" v-show="!myCoupons.used.length">对不起，您没有优惠券</div>
         </ul>
       </div>
     </section>
@@ -72,7 +72,7 @@
       },
       change(index) {
         this.num = index;
-        this.scroll.refresh()
+        this._initScroll()
       }
     },
     computed: {
@@ -158,7 +158,7 @@
                 font-size 24px
           .noCoupons
             width 100%
-            margin-top 150px
+            margin-top 200px
             text-align: center
             color #aaa
             font-size 28px

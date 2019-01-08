@@ -26,7 +26,7 @@
     methods: {
       async submit() {
         const result = await reqMessage(
-          this.user.member_id,
+          this.member_id,
           this.message_center
         );
         if (result.code === 200) {
@@ -38,7 +38,7 @@
       }
     },
     computed: {
-      ...mapState(['user'])
+      ...mapState(['member_id'])
     }
   }
 </script>

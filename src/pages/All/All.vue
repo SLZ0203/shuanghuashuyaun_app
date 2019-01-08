@@ -1,7 +1,7 @@
 <!--全部课程-->
 <template>
   <section class="all_wrap">
-    <HeaderTop :title="title"></HeaderTop>
+    <HeaderTop :title="title" style="z-index: 100"></HeaderTop>
     <nav class="header_nav">
       <div class="item" :class="{on:num===0}" @click="changeOne(0,'course_price_rmb')">课程价格</div>
       <div class="item" :class="{on:num===1}" @click="changeOne(1)">课程种类</div>
@@ -9,7 +9,7 @@
     </nav>
     <div class="scroll_wrap">
       <div>
-        <ul class="project_list">
+        <ul class="project_list" v-if="courseArr.length>0">
           <li class="project_item" v-for="(pro,index) in courseArr" :key="index"
               @click="goToDetail(pro.course_id)">
             <img v-lazy="'http://shedu.581vv.com'+pro.course_thumb">
@@ -25,16 +25,16 @@
             </div>
           </li>
         </ul>
-        <div class="tipText" v-if="!courseArr">暂时没有课程，敬请期待</div>
+        <div class="tipText" v-else>暂时没有课程，敬请期待</div>
       </div>
     </div>
-    <ul class="all_project_list" v-show="isShow">
-      <li class="project_item" :class="{active:active===-1}" @click="cateCourse(-1)">全部</li>
-      <li class="project_item" v-for="(name,index) in courseCate" :key="index" @click="cateCourse(index,name.cate_id)"
+    <ul class="all_project_list" v-show="isShow"><!-- v-show="isShow"-->
+      <li class="project_item" :class="{active:active===-1}" @click="getcateCourse(-1)">全部</li>
+      <li class="project_item" v-for="(name,index) in cateArr" :key="index" @click="getcateCourse(index,name.cate_id)"
           :class="{active:active===index}">{{name.cate_name}}
       </li>
     </ul>
-    <Shade v-show="isShow"/>
+    <Shade v-show="isShow" v-bind:isShow="isShow" v-on:closeShade="closeShade"/>
   </section>
 </template>
 
@@ -42,32 +42,41 @@
   import BScroll from 'better-scroll'
   import HeaderTop from '../../components/HeaderTop/HeaderTop'
   import Shade from '../../components/Shade/Shade'
-  import {mapState} from 'vuex'
-  import {reqSortCourse, reqCateCourse} from '../../api'
-  import {Indicator, Toast} from 'mint-ui';
+  import {reqCourse, reqCourseCate, reqCateCourse, reqSortCourse} from '../../api'
+  import {Indicator} from 'mint-ui';
 
   export default {
     name: "All",
     data() {
       return {
         title: '全部课程',
-        num: 0,
+        num: '',
         active: -1,
+        cateId: '',
         isShow: false,
+        cateArr: [],
         courseArr: [],
         sortNum: true
       }
     },
-    mounted() {
+    async mounted() {
+      let res;
       Indicator.open();
-      //获取课程分类
-      this.$store.dispatch('getCourseCate');
-      //获取课程
-      this.$store.dispatch('getCourse', () => {
-        this.courseArr = this.course;
+      //获取课程列表
+      res = await reqCourse();
+      if (res.code === 200) {
+        this.courseArr = res.data;
         this._initScroll();
+      } else {
+        Indicator.close();
+        this.courseArr = []
+      }
+      //获取课程分类
+      res = await reqCourseCate();
+      if (res.code === 200) {
+        this.cateArr = res.data;
         Indicator.close()
-      });
+      }
     },
     methods: {
       //tab切换及排序
@@ -79,39 +88,44 @@
           this.isShow = false;
           this.sortNum = !this.sortNum;
           let sort;
-          if (this.sortNum === true) {
+          if (this.sortNum) {
             sort = 1
           } else {
             sort = 2
           }
           Indicator.open();
-          const result = await reqSortCourse(sortType, sort);
+          const result = await reqSortCourse(this.cateId, sortType, sort);
+          if (result.code === 200) {
+            this.courseArr = result.data;
+            this._initScroll();
+            Indicator.close()
+          } else {
+            Indicator.close();
+            this.courseArr = []
+          }
+        }
+      },
+      //课程分类
+      async getcateCourse(index, cId) {
+        this.active = index;
+        Indicator.open();
+        if (index === -1) {
+          this.cateId = '';
+          const result = await reqCourse();
           if (result.code === 200) {
             this.courseArr = result.data;
             this._initScroll();
             Indicator.close()
           }
-        }
-      },
-      //课程分类
-      async cateCourse(index, cateId) {
-        this.active = index;
-        Indicator.open();
-        if (index === -1) {
-          this.$store.dispatch('getCourse', () => {
-            this._initScroll();
-            Indicator.close()
-          });
-          this.courseArr = this.course
         } else {
-          Indicator.open();
-          const result = await reqCateCourse(cateId);
+          this.cateId = cId;
+          const result = await reqCateCourse(this.cateId);
           if (result.code === 200) {
             this.courseArr = result.data;
             this._initScroll();
             Indicator.close()
-          } else{
-            Toast(result.msg);
+          } else {
+            this.courseArr = [];
             Indicator.close()
           }
         }
@@ -135,10 +149,11 @@
           path: '/project_detail',
           query: {id}
         })
+      },
+      //关闭遮罩层
+      closeShade(fal) {
+        this.isShow = fal
       }
-    },
-    computed: {
-      ...mapState(['course', 'courseCate'])
     },
     components: {
       HeaderTop,
@@ -161,7 +176,8 @@
       background #fff
       justify-content space-between
       position relative
-      bottom-border-1px(#666)
+      z-index 100
+      bottom-border-1px(#999)
       .item
         font-size 26px
         height: 100%
@@ -221,11 +237,11 @@
             font-size 30px
             color #FE5F35
       .tipText
+        width 100%
+        font-size 28px
         text-align: center
         position absolute
-        top 50%
-        left 50%
-        transform translate(-50%, -50%)
+        top 400px
         color #7e8c8d
     .all_project_list
       width 100%

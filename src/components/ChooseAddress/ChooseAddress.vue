@@ -140,6 +140,10 @@
         this.city = '';
         this.area = '';
         this.street = '';
+        this.proShow = true;
+        this.cityShow = false;
+        this.areaShow = false;
+        this.streetShow = false;
         this.$emit('closeAddress', false)
       },
       confirm() {
@@ -153,6 +157,10 @@
           return Toast('请选择您所在的街道')
         } else {
           this.address = this.pro + ' ' + this.city + ' ' + this.area + ' ' + this.street;
+          this.proShow = true;
+          this.cityShow = false;
+          this.areaShow = false;
+          this.streetShow = false;
           this.$emit('closeAddress', false);
           this.$emit('doneAddress', this.address)
         }

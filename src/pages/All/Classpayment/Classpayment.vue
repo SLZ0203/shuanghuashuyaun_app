@@ -68,6 +68,7 @@
         num: "",
         isChecked: false,//会员合同选择
         detail: this.$route.query.detail,
+        order_id: this.$route.query.order_id,
         wxJson: {}
       }
     },
@@ -84,21 +85,21 @@
       //点击支付按钮
       async goBuy() {
         let result;
-        if (!this.agreen) {
-          Toast('请您同意会员合同！')
-        } else if (this.num === '') {
+        if (this.num === '') {
           Toast('请您选择支付方式！')
+        } else if (!this.agreen) {
+          Toast('请您同意会员合同！')
         } else {
           if (this.num === 0) { //微信支付
-            result = await wxPay();//this.detail.course_id, this.useCoupons.id
+            result = await wxPay(222, this.useCoupons.id);
             console.log(result);
-            if (result.code === 200) {
+            /*if (result.code === 200) {
               this.wxJson = result.data;
               this.wx_pay()
-            }
+            }*/
             //this.$router.push('pay_win')
           } else {//支付宝支付
-            result = await aliPay(this.detail.course_id, this.useCoupons.id);
+            result = await aliPay(222, this.useCoupons.id);
             console.log(result);
             //this.$router.push('pay_win')
           }
@@ -128,11 +129,6 @@
     computed: {
       ...mapState(['useCoupons', 'agreen'])
     },
-    watch: {
-      agreen(value) {
-        console.log(value);
-      }
-    }
   }
 </script>
 

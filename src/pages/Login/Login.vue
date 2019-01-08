@@ -142,14 +142,14 @@
       },
       //微信登录的请求
       wechatLogin() {
-        const APPID = 'wxafb246c9980a0659';
+        /*const APPID = 'wxafb246c9980a0659';
         let host = window.location.host;
         //scope为snsapi_userinfo
         const url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + APPID +
           '&redirect_uri=http%3A%2F%2Fnba.bluewebgame.com%2Foauth_response.php&' +
           'response_type=code&scope=snsapi_userinfo' +
           '#wechat_redirect';
-        window.location.href = url
+        window.location.href = url*/
       },
     },
     computed: {

@@ -73,11 +73,13 @@
       },
       async toPay(mid, cid) {
         const result = await reqCreateOrder(mid, cid);
+        const order_id = result.data;
         if (result.code === 200) {
           this.$router.push({
             path: '/class_payment',
             query: {
-              detail: this.detail
+              detail: this.detail,
+              order_id
             }
           })
         } else {

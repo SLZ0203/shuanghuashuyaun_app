@@ -432,16 +432,16 @@
       overflow hidden
       position fixed
       bottom 0
-      .choose_list
+    .choose_list
+      width 100%
+      .choose_item
         width 100%
-        .choose_item
-          width 100%
-          height 100px
-          line-height 100px
-          text-align: center
-          font-size 30px
-          &.check
-            background #eee
+        height 100px
+        line-height 100px
+        text-align: center
+        font-size 30px
+        &.check
+          background #eee
 
   .choose_work
     height 50%

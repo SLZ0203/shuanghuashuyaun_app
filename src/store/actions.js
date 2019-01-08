@@ -7,8 +7,6 @@ import {
   reqNews,
   reqHotCourse,
   reqHotNews,
-  reqCourse,
-  reqCourseCate,
   reqCoupons,
   reqMyCourse,
   reqExpense,
@@ -28,8 +26,6 @@ import {
   RECEIVE_NEWS,
   RECEIVE_HOTNEWS,
   RECEIVE_HOTCOURSE,
-  RECEIVE_COURSE,
-  RECEIVE_COURSECATE,
   RECEIVE_COUPONS,
   RECEIVE_MYEXPENSE,
   RECEIVE_MYCOUPONS,
@@ -112,28 +108,6 @@ export default {
       const hotNews = result.data;
       //commit给mutation
       commit(RECEIVE_HOTNEWS, {hotNews});
-      // 在更新状态后立即调用
-      typeof cb === 'function' && cb()
-    }
-  },
-  //发异步请求获取课程列表
-  async getCourse({commit}, cb) {
-    const result = await reqCourse();
-    if (result.code === 200) {
-      const course = result.data;
-      //commit给mutation
-      commit(RECEIVE_COURSE, {course});
-      // 在更新状态后立即调用
-      typeof cb === 'function' && cb()
-    }
-  },
-  //发异步请求获取课程分类
-  async getCourseCate({commit}, cb) {
-    const result = await reqCourseCate();
-    if (result.code === 200) {
-      const courseCate = result.data;
-      //commit给mutation
-      commit(RECEIVE_COURSECATE, {courseCate});
       // 在更新状态后立即调用
       typeof cb === 'function' && cb()
     }
