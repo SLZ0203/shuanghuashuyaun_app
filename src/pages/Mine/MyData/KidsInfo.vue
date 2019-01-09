@@ -14,21 +14,21 @@
               </li>
               <li class="info_item">
                 <div class="info_one">姓名</div>
-                <input type="text" :placeholder="item.child_name?item.child_name:'请输入孩子姓名'" v-model="name">
+                <input type="text" :placeholder="item.child_name?item.child_name:'请输入孩子姓名'" ref="name"
+                       @input="inputName(index)">
               </li>
               <li class="info_item">
                 <div class="info_one">性别</div>
-                <div @click="sexShow=true">
-                  <input type="text" :placeholder="item.child_sex==='1'?'男':(item.child_sex===2?'女':'请选择')"
-                         readonly="readonly" v-model="sex">
+                <div @click="sexSelect(index)">
+                  <input type="text" :placeholder="item.child_sex==='1'?'男':(item.child_sex==='2'?'女':'请选择')"
+                         readonly="readonly">
                   <img src="../../../../static/images/5@2x.png" class="more">
                 </div>
               </li>
               <li class="info_item">
                 <div class="info_one">出生年月</div>
-                <div @click="openBirthday">
-                  <input type="text" :placeholder="item.child_age?item.child_age:'请选择'" readonly="readonly"
-                         v-model="age">
+                <div @click="openBirthday(index)">
+                  <input type="text" :placeholder="item.child_age?item.child_age:'请选择'" readonly="readonly">
                   <img src="../../../../static/images/5@2x.png" class="more">
                 </div>
               </li>
@@ -78,37 +78,33 @@
   import {reqMyChildren, reqEditChildren} from '../../../api'
   import {mapState} from 'vuex'
   import Shade from '../../../components/Shade/Shade'
+  import {Indicator, Toast} from 'mint-ui';
 
   export default {
     name: "KidsInfo",
     data() {
       return {
         title: '孩子资料',
-        name: '',
-        sex: '',
-        age: '',
         sexShow: false,
-        sexId: '',
         sexChoose: ['男', '女'], //性别选择
-        chooseNum: 0,
-        childArr: [
-          {
-            "child_id": "7",
-            "child_name": "888",
-            "child_sex": "1",
-            "child_age": "2018-12-06",
-            "child_cid": "57",
-            "child_times": "1544077074",
-            "child_is_show": "1"
-          },
-        ],
+        initNum: 0,
+        chooseNum: '',
+        childArr: [],
         dataVal: new Date(),
+        child_id: 1
       }
     },
     async mounted() {
-      this._initScroll();
+      Indicator.open();
       const res = await reqMyChildren(this.member_id);
-      //this.childArr = res.data
+      if (res.code === 200) {
+        this.childArr = res.data;
+        this._initScroll();
+        Indicator.close();
+      } else {
+        Indicator.close();
+        Toast(res.msg)
+      }
     },
     methods: {
       _initScroll() {
@@ -122,32 +118,49 @@
           }
         })
       },
+      //输入名字
+      inputName(i) {
+        this.initNum = i;
+        const n = this.$refs.name[this.initNum].value;
+        this.childArr[this.initNum].child_name = n
+      },
+      //打开性别选择
+      sexSelect(i) {
+        this.sexShow = true;
+        this.initNum = i
+      },
+      //选择性别
       choose(item, index) {
         this.chooseNum = index;
-        this.sex = item;
-        this.sexId = index + 1
+        this.childArr[this.initNum].child_sex = index + 1 + '';
       },
       //打开生日选择
-      openBirthday() {
+      openBirthday(i) {
+        this.initNum = i;
         this.$refs.dataPicker.open();
       },
       //生日选择的确定按钮
       handleConfirm() {
         const d = this.dataVal;
         this.dataVal = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
-        this.age = this.dataVal
+        this.childArr[this.initNum].child_age = this.dataVal
       },
       //添加孩子资料
       addChild() {
+        this.child_id++;
         this.childArr.push({
-          child_id: '1',
-          child_name: this.id,
+          child_id: this.child_id,
+          child_name: '',
           child_sex: '',
           child_age: ''
         });
       },
       //保存孩子资料
-      save(){
+      async save() {
+        Indicator.open('正在保存');
+        const res = await reqEditChildren(this.member_id, this.childArr);
+        Indicator.close();
+        Toast(res.msg);
       }
     },
     computed: {

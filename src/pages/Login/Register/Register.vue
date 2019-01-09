@@ -72,7 +72,6 @@
           }, 1000);
           //发送请求获取验证码
           const result = await reqSendCode(this.email);
-          console.log(result);
           if (result.code === 200) {
             Toast(result.msg)
           } else {
@@ -93,10 +92,9 @@
         } else if (!this.isRightEmail) {
           return Toast('请输入正确的邮箱')
         } else if (!code) {
+          return Toast('验证码不能为空')
         } else if (!this.isRightCode) {
           return Toast('请输入正确的验证码')
-        } else if (!code) {
-          return Toast('验证码不能为空')
         } else if (!password) {
           return Toast('密码不能为空')
         } else {
@@ -128,7 +126,7 @@
       },
       //验证码正则验证
       isRightCode() {
-        return /^\d{4}$/.test(this.authCode)
+        return /^\d{4}$/.test(this.code)
       }
     },
     beforeDestroy() {

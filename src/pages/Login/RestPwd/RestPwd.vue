@@ -18,7 +18,7 @@
           <img src="../../../../static/images/6@2x.png" class="login_img">
           <span>验证码</span>
         </div>
-        <input type="password" placeholder="请输入验证码" v-model="code">
+        <input type="text" placeholder="请输入验证码" v-model="code" maxlength="4" oninput="value=value.replace(/[^\d]/g,'')">
         <button class="get_code" @click="getCode" :disabled="computeTime>0">
           {{computeTime>0 ? `重新获取${computeTime}s` : '获取验证码'}}
         </button>
@@ -90,12 +90,13 @@
           return Toast('请输入正确的邮箱')
         } else if (!code) {
           return Toast('验证码不能为空')
+        } else if (!this.isRightCode) {
+          return Toast('请输入正确的验证码')
         } else if (!password) {
           return Toast('密码不能为空')
         } else {
           //重置密码的请求
           const result = await reqForgetPassword(email, password);
-          console.log(result);
           if (result.code === 200) {
             Toast(result.msg + ',去登陆');
             this.timer = setTimeout(() => {
@@ -110,6 +111,10 @@
     computed: {
       isRightEmail() {
         return /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(this.email)
+      },
+      //验证码正则验证
+      isRightCode() {
+        return /^\d{4}$/.test(this.code)
       }
     },
   }
