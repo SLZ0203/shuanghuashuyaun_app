@@ -122,7 +122,7 @@
 <script>
   import {mapState} from 'vuex'
   import Cropper from 'cropperjs'
-  import {reqMember, reqPersonalEdit} from '../../../api'
+  import {reqMember, reqPersonalEdit, reqUploadImg} from '../../../api'
   import Shade from '../../../components/Shade/Shade'
   import BScroll from 'better-scroll'
   import {Indicator, Toast} from 'mint-ui';
@@ -159,6 +159,7 @@
     async mounted() {
       Indicator.open('加载中');
       const result = await reqMember(this.user.member_id);
+      console.log(result);
       if (result.code === 200) {
         this.name = result.data.member_realname;
         this.sex = result.data.member_sex === 1 ? '男' : '女';
@@ -207,11 +208,12 @@
         this.$refs['file'].value = '';
       },
       //确定裁剪
-      confirmHandle() {//确定裁剪
+      async confirmHandle() {//确定裁剪
         let croppedCanvas = this.cropper.getCroppedCanvas();
         let roundedCanvas = this.getRoundedCanvas(croppedCanvas);
         this.avatar = roundedCanvas.toDataURL();
         this.$refs['layer'].style.display = 'none';
+        const res = await reqUploadImg(this.avatar);
       },
       getRoundedCanvas(sourceCanvas) {
         const canvas = document.createElement('canvas');

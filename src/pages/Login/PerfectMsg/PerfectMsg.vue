@@ -135,9 +135,8 @@
       }
     },
     async mounted() {
-      Indicator.open('加载中');
-      const result = await reqMember(this.user.member_id);
-      console.log(result);
+      //Indicator.open('加载中');
+      const result = await reqMember(this.member_id);
       if (result.code === 200) {
         this.name = result.data.member_realname;
         this.sex = result.data.member_sex === 1 ? '男' : '女';
@@ -227,7 +226,7 @@
           return Toast('请输入正确的电话号码')
         } else {
           const result = await reqPersonalEdit(
-            this.user.member_id,
+            this.member_id,
             this.name,
             this.sexId,
             this.birthday,
@@ -251,7 +250,7 @@
       },
     },
     computed: {
-      ...mapState(['user']),
+      ...mapState(['member_id']),
       isRightPhone() {
         return /^1[3|4|5|7|8|9][0-9]\d{8}$/.test(this.phone)
       },

@@ -4,13 +4,13 @@
     <HeaderTop :title="title">
       <img src="../../../../static/images/21@2x.png" slot="return" class="return" @click="$router.back()">
     </HeaderTop>
-    <div class="nonuse" @click="noneUse">
+    <div class="nonuse" @click="noneUse" v-if="coupons.length>0">
       <span>不使用优惠券</span>
       <span class="checkbox" :class="{checked:isChecked}"></span>
     </div>
-    <section class="scroll_wrap">
+    <section class="scroll_wrap" v-if="coupons.length>0">
       <ul class="coupon_list">
-        <li class="coupon_item" v-for="(cou,index) in couponList" :key="index" @click="checkCoupon(cou,index)">
+        <li class="coupon_item" v-for="(cou,index) in coupons" :key="index" @click="checkCoupon(cou,index)">
           <div class="left_wrap">
             <span class="money">￥</span>
             <span class="num">{{cou.coupon_quota_rmb}}</span>
@@ -26,6 +26,7 @@
         </li>
       </ul>
     </section>
+    <div class="no_coupon" v-if="coupons.length===0">对不起，您没有优惠券</div>
   </section>
 </template>
 
@@ -40,27 +41,28 @@
         title: '使用优惠券',
         isChecked: false,
         thatNum: '',
-        couponList: [
-          {
-            coupon_id: '1',
-            coupon_quota_rmb: '50',
-            coupon_condition_rmb: '500',
-            coupon_name: '购买课程抵扣券',
-          },
-          {
-            coupon_id: '2',
-            coupon_quota_rmb: '100',
-            coupon_condition_rmb: '1000',
-            coupon_name: '购买课程抵扣券',
-          },
-        ]
       }
     },
     methods: {
+      _initScroll() {
+        this.$nextTick(() => {
+          if (this.coupons){
+            if (!this.myscroll) {
+              this.myscroll = new BScroll('.scroll_wrap', {
+                click: true
+              })
+            } else {
+              this.myscroll.refresh()
+            }
+          }
+        })
+      },
       noneUse() {
         this.isChecked = !this.isChecked;
         if (this.isChecked) {
           this.thatNum = '';
+          this.$store.dispatch('restUseCoupon');
+          this.$router.back()
         }
       },
       checkCoupon(cou, index) {
@@ -76,15 +78,11 @@
       }
     },
     mounted() {
-      this.$nextTick(() => {
-        new BScroll('.scroll_wrap', {
-          click: true
-        })
-      })
+      this._initScroll()
     },
     computed: {
       ...mapState(['coupons'])
-    }
+    },
   }
 </script>
 
@@ -115,12 +113,15 @@
           bg-image("../../../../static/images/29")
     .scroll_wrap
       width 100%
-      height 100%
       background #fff
       overflow hidden
+      position fixed
+      top 256px
+      bottom 0
+      left 0
       .coupon_list
         width 100%
-        padding 33px 33px 256px
+        padding 33px 33px 0
         box-sizing border-box
         background #fff
         .coupon_item
@@ -169,4 +170,7 @@
               bg-image("../../../../static/images/27")
               &.on
                 bg-image("../../../../static/images/29")
+    .no_coupon
+      text-align: center
+      margin-top 200px
 </style>

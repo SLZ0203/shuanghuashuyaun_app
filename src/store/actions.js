@@ -19,6 +19,7 @@ import {
   RECEIVE_MEMBER_ID,
   RECEIVE_USER,
   RESET_USER,
+  RECEIVE_NOTUSECOUPONS,
   RECEIVE_USECOUPONS,
   RECEIVE_AGREEN,
   RECEIVE_BANNER,
@@ -48,11 +49,15 @@ export default {
     // 在更新状态后立即调用
     typeof cb === 'function' && cb()
   },
+  //不使用优惠券
+  restUseCoupon({commit}){
+    commit(RECEIVE_NOTUSECOUPONS)
+  },
   //保存选择的优惠券
   saveUseCoupon({commit}, useCoupons) {
     commit(RECEIVE_USECOUPONS, {useCoupons})
   },
-  //用户石佛同意会员合同
+  //用户是否同意会员合同
   userAgreen({commit}, agreen) {
     commit(RECEIVE_AGREEN, {agreen})
   },

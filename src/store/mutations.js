@@ -5,6 +5,7 @@ import {
   RECEIVE_MEMBER_ID,
   RECEIVE_USER,
   RESET_USER,
+  RECEIVE_NOTUSECOUPONS,
   RECEIVE_USECOUPONS,
   RECEIVE_AGREEN,
   RECEIVE_BANNER,
@@ -30,6 +31,9 @@ export default {
   [RESET_USER](state) {
     state.member_id = '';
     state.user = {}
+  },
+  [RECEIVE_NOTUSECOUPONS](state){
+    state.useCoupons = {}
   },
   [RECEIVE_USECOUPONS](state, {useCoupons}) {
     state.useCoupons = useCoupons;

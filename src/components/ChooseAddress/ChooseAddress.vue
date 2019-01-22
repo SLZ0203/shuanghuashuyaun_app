@@ -15,17 +15,17 @@
     <div class="scroll_wrap">
       <ul class="choose_list">
         <li class="choose_item" v-for="(pro,index) in proList" :key="'p'+index" @click="proChoose(pro,index)"
-            :class="{check:chooseNum===index}" v-show="proShow">{{pro.name}}
+            :class="{check:numOne===index}" v-show="proShow">{{pro.name}}
         </li>
         <li class="choose_item" v-for="(city,index) in cityList" :key="'c'+index" @click="cityChoose(city,index)"
-            :class="{check:chooseNum===index}" v-show="cityShow">{{city.name}}
+            :class="{check:numTwo===index}" v-show="cityShow">{{city.name}}
         </li>
         <li class="choose_item" v-for="(area,index) in areaList" :key="'a'+index" @click="areaChoose(area,index)"
-            :class="{check:chooseNum===index}" v-show="areaShow">{{area.name}}
+            :class="{check:numThree===index}" v-show="areaShow">{{area.name}}
         </li>
         <li class="choose_item" v-for="(street,index) in streetList" :key="'s'+index"
             @click="streetChoose(street,index)"
-            :class="{check:chooseNum===index}" v-show="streetShow">{{street.name}}
+            :class="{check:numFour===index}" v-show="streetShow">{{street.name}}
         </li>
       </ul>
     </div>
@@ -45,7 +45,10 @@
     data() {
       return {
         address: '',
-        chooseNum: 0,
+        numOne: 0,
+        numTwo: 0,
+        numThree: 0,
+        numFour: 0,
         proShow: true, //省列表显示/隐藏
         cityShow: false,//市列表显示/隐藏
         areaShow: false,//区列表显示/隐藏
@@ -62,7 +65,6 @@
     },
     mounted() {
       this.proList = add;
-
     },
     methods: {
       _initscroll() {
@@ -78,7 +80,7 @@
       },
       //选择省份
       proChoose(pro, index) {
-        this.chooseNum = index;
+        this.numOne = index;
         this.pro = pro.name;
         this.cityList = pro.children;
         this.proShow = false;
@@ -86,7 +88,7 @@
       },
       //选择城市
       cityChoose(city, index) {
-        this.chooseNum = index;
+        this.numTwo = index;
         this.city = city.name;
         this.areaList = city.children;
         this.cityShow = false;
@@ -94,7 +96,7 @@
       },
       //选择区县
       areaChoose(area, index) {
-        this.chooseNum = index;
+        this.numThree = index;
         this.area = area.name;
         this.streetList = area.children;
         this.areaShow = false;
@@ -102,7 +104,7 @@
       },
       //选择街道
       streetChoose(street, index) {
-        this.chooseNum = index;
+        this.numFour = index;
         this.street = street.name;
       },
       showPro() {

@@ -1,6 +1,6 @@
 <!--登录页面-->
 <template>
-  <section class="register_wrap">
+  <section class="login_wrap">
     <div class="login_logo">
       <img src="../../../static/images/1@2x.png" class="logo_img">
       <p>欢迎登录账号</p>
@@ -167,10 +167,10 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "../../../static/css/mixins.styl"
 
-  .register_wrap
+  .login_wrap
     width 100%
     height 100%
-    padding 170px 64px 0 55px
+    padding 130px 64px 0 55px
     box-sizing border-box
     background #fff
     .login_logo
@@ -184,7 +184,7 @@
         font-size 44px
     .login_list
       width 100%
-      margin-top 126px
+      margin-top 110px
       .login_item
         input
           width 100%
@@ -206,7 +206,7 @@
           color #999
           font-size 28px
       .top
-        margin-top 70px
+        margin-top 60px
       .register
         margin-top 35px
         display flex

@@ -17,7 +17,7 @@
         <div class="name">优惠券</div>
         <div class="content">
           <span v-if="useCoupons.full" class="full_sub">满{{useCoupons.full}}减{{useCoupons.sub}}</span>
-          <span v-else>无优惠券</span>
+          <span v-else>未选择优惠券</span>
           <img src="../../../../static/images/26@2x.png" class="more_img">
         </div>
       </li>
@@ -93,10 +93,10 @@
           if (this.num === 0) { //微信支付
             result = await wxPay(222, this.useCoupons.id);
             console.log(result);
-            /*if (result.code === 200) {
+            if (result.code === 200) {
               this.wxJson = result.data;
               this.wx_pay()
-            }*/
+            }
             //this.$router.push('pay_win')
           } else {//支付宝支付
             result = await aliPay(222, this.useCoupons.id);

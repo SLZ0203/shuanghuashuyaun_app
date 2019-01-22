@@ -98,8 +98,8 @@
           //重置密码的请求
           const result = await reqForgetPassword(email, password);
           if (result.code === 200) {
-            Toast(result.msg + ',去登陆');
-            this.timer = setTimeout(() => {
+            Toast(result.msg + ',去登录');
+            setTimeout(() => {
               this.$router.replace('/login')
             }, 2000)
           } else {

@@ -1,6 +1,6 @@
 <!--注册页面-->
 <template>
-  <section class="login_wrap">
+  <section class="register_wrap">
     <div class="login_logo">
       <img src="../../../../static/images/1@2x.png" class="logo_img">
       <p>欢迎注册账号</p>
@@ -109,7 +109,7 @@
             //注册的请求
             result = await reqRegister(email, password);
             if (result.code === 200) {
-              Toast(result.msg + ',去登陆');
+              Toast(result.msg + ',去登录');
               this.timer = setTimeout(() => {
                 this.$router.replace('/login')
               }, 2000)
@@ -138,10 +138,10 @@
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "../../../../static/css/mixins.styl"
-  .login_wrap
+  .register_wrap
     width 100%
     height 100%
-    padding 170px 64px 0 55px
+    padding 150px 64px 0 55px
     box-sizing border-box
     background #fff
     .toast
@@ -159,9 +159,9 @@
         font-size 44px
     .login_list
       width 100%
-      margin-top 126px
+      margin-top 110px
       .top
-        margin-top 70px
+        margin-top 60px
       .posi
         position relative
       .login_item

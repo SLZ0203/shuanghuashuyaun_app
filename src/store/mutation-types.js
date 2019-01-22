@@ -3,6 +3,7 @@ mutation函数名称常量
  */
 export const RECEIVE_USER = 'receive_user'; //保存用户信息
 export const RECEIVE_MEMBER_ID = 'receive_member_id'; //保存用户id
+export const RECEIVE_NOTUSECOUPONS = 'receive_notusecoupons'; //保存使用的优惠券
 export const RECEIVE_USECOUPONS = 'receive_usecoupons'; //保存使用的优惠券
 export const RECEIVE_AGREEN = 'receive_agreen'; //保存使用的优惠券
 export const RESET_USER = 'reset_user'; // 重置用户信息

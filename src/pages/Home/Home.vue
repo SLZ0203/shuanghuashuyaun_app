@@ -15,11 +15,11 @@
           </div>
         </div>
         <ul class="btn_list">
-          <li class="btn_item right" @click="$router.push('/all')">
+          <li class="btn_item" @click="$router.push('/all')">
             <img src="../../../static/images/8@2x.png" class="btn_img">
             <p>全部课程</p>
           </li>
-          <li class="btn_item right" @click="$router.push('/allcampus')">
+          <li class="btn_item" @click="$router.push('/allcampus')">
             <img src="../../../static/images/9@2x.png" class="btn_img">
             <p>全部校区</p>
           </li>
@@ -175,6 +175,7 @@
           display flex
           padding 30px 30px 0
           box-sizing border-box
+          justify-content space-between
           background rgba(255, 255, 255, 1)
           .btn_item
             width 220px
@@ -185,8 +186,6 @@
             padding-top 36px
             box-sizing border-box
             font-size 30px
-            &.right
-              margin-right 15px
             .btn_img
               width 48px
               height 48px

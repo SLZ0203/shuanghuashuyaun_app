@@ -8,6 +8,7 @@ import VueLazyload from 'vue-lazyload'
 import loading from '../static/images/lazy.gif'
 import HeaderTop from './components/HeaderTop/HeaderTop';
 import Mint from 'mint-ui';
+import '../static/js/vconsole'
 
 Vue.use(Mint);
 Vue.use(VueLazyload, {loading});

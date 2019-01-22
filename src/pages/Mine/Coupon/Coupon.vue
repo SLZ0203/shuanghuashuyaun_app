@@ -23,11 +23,11 @@
               <p class="full_sub">满{{item.coupon_condition_rmb}}减{{item.coupon_quota_rmb}}</p>
             </div>
           </li>
-          <div class="noCoupons" v-show="!myCoupons.not_used.length">对不起，您没有优惠券</div>
+          <div class="noCoupons" v-show="myCoupons.not_used.length===0">对不起，您没有未使用的优惠券</div>
         </ul>
         <!--已使用优惠券-->
         <ul class="used_coupon_list" v-show="num===1">
-          <li class="used_item" v-for="(item,index) in myCoupons.used" :key="index"
+          <li class="used_item" v-for="(item,index) in myCoupons.used.length" :key="index"
               v-if="myCoupons.used.length">
             <div class="left_wrap">
               <span class="money">￥</span>
@@ -39,7 +39,7 @@
               <p class="full_sub">满{{item.coupon_condition_rmb}}减{{item.coupon_quota_rmb}}</p>
             </div>
           </li>
-          <div class="noCoupons" v-show="!myCoupons.used.length">对不起，您没有优惠券</div>
+          <div class="noCoupons" v-show="myCoupons.used.length===0">对不起，您没有已使用的优惠券</div>
         </ul>
       </div>
     </section>
@@ -57,6 +57,9 @@
         title: '优惠券',
         num: 0,
       }
+    },
+    mounted() {
+      console.log(this.myCoupons);
     },
     methods: {
       _initScroll() {
